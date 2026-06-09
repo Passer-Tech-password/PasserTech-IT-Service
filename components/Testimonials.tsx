@@ -2,12 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Quote, Star, Loader2 } from "lucide-center"; // Fixed icon library
+import { Quote as QuoteIcon, Star as StarIcon, Loader2 } from "lucide-react";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-
-// Fixed imports for Lucide icons
-import { Quote as QuoteIcon, Star as StarIcon } from "lucide-react";
 
 const Testimonials = () => {
   const [testimonials, setTestimonials] = useState<any[]>([]);
