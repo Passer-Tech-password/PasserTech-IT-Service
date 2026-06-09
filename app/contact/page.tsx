@@ -7,6 +7,13 @@ import { Send, Phone, Mail, MapPin, MessageSquare } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contact Us",
+  description: "Get in touch with PasserTech IT Service for software development projects or academy enrollments.",
+};
+
 const ContactPage = () => {
   const { t } = useLanguage();
   const [formData, setFormData] = useState({

@@ -9,6 +9,17 @@ import JoinFreeClassModal from "@/components/JoinFreeClassModal";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Academy",
+  description: "Browse our courses in Igbo, Hausa, Yoruba, and Pidgin. Master software engineering without language barriers.",
+  openGraph: {
+    title: "Mother Tongue Tech Academy | PasserTech",
+    description: "Learn HTML, CSS, Python and more in your native language.",
+  },
+};
+
 const AcademyPage = () => {
   const { language, t } = useLanguage();
   const [isModalOpen, setIsModalOpen] = useState(false);

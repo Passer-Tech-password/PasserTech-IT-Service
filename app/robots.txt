@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://passertech.com/sitemap.xml
+
+# Prevent indexing of dashboards
+Disallow: /admin/
+Disallow: /staff/
+Disallow: /login/

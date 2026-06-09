@@ -5,6 +5,13 @@ import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/LanguageContext";
 import { Code, Cloud, Headphones, Layout, Shield, Database, Smartphone, Globe } from "lucide-react";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Our Services",
+  description: "Professional IT services in Nigeria. Software development, Cloud engineering, and IT support tailored for global impact.",
+};
+
 const ServicesPage = () => {
   const { t } = useLanguage();
 

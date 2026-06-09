@@ -6,6 +6,13 @@ import { ExternalLink, Github, Filter, Loader2 } from "lucide-react";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Portfolio",
+  description: "Explore our recent projects in mobile app development, e-commerce, and community portals across Nigeria.",
+};
+
 const ProjectsPage = () => {
   const [projects, setProjects] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
