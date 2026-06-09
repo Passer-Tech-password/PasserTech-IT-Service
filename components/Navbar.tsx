@@ -29,6 +29,7 @@ const Navbar = () => {
 
   const navLinks = [
     { name: t.nav.home, href: "/" },
+    { name: t.nav.about, href: "/about" },
     { name: t.nav.services, href: "/services" },
     { name: t.nav.academy, href: "/academy" },
     { name: t.nav.projects, href: "/projects" },

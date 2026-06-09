@@ -14,7 +14,8 @@ const StaffRegister = () => {
     fullName: "",
     email: "",
     phone: "",
-    role: "tutor",
+    position: "",
+    role: "staff",
     password: "",
   });
   const [loading, setLoading] = useState(false);
@@ -39,7 +40,8 @@ const StaffRegister = () => {
         fullName: formData.fullName,
         email: formData.email,
         phone: formData.phone,
-        role: formData.role, // 'admin', 'staff' (Tutor/Support)
+        position: formData.position,
+        role: formData.role, // 'admin', 'staff'
         isApproved: false, // Must be approved by an existing admin
         createdAt: serverTimestamp(),
       });
@@ -122,17 +124,31 @@ const StaffRegister = () => {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground/70 ml-1">Desired Role</label>
+            <label className="text-sm font-medium text-foreground/70 ml-1">Job Position / Role</label>
             <div className="relative">
               <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground/40" />
+              <input
+                required
+                type="text"
+                placeholder="e.g. Senior Tutor, IT Support, CEO"
+                className="w-full bg-background border border-white/10 rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-primary transition-colors"
+                value={formData.position}
+                onChange={(e) => setFormData({ ...formData, position: e.target.value })}
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground/70 ml-1">Account Type</label>
+            <div className="relative">
+              <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground/40" />
               <select
                 className="w-full bg-background border border-white/10 rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-primary transition-colors appearance-none"
                 value={formData.role}
                 onChange={(e) => setFormData({ ...formData, role: e.target.value })}
               >
-                <option value="tutor">Tutor</option>
+                <option value="staff">Staff Member</option>
                 <option value="admin">Admin</option>
-                <option value="support">Support</option>
               </select>
             </div>
           </div>

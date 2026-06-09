@@ -13,6 +13,7 @@ export const translations = {
     nav: {
       home: "Home",
       services: "Services",
+      about: "About Us",
       academy: "Academy",
       projects: "Projects",
       blog: "Blog",
@@ -24,6 +25,26 @@ export const translations = {
       subtitle: "Empowering marginalized youths to build global careers without language barriers — in Igbo, Hausa, Yoruba, and Pidgin.",
       ctaStart: "Start Learning Free",
       ctaHire: "Hire Our Services",
+    },
+    about: {
+      title: "About PasserTech",
+      summary: "PasserTech IT Service is a pioneering technology company dedicated to bridging the digital divide in Africa. We specialize in providing high-quality IT services and technical education in local languages, ensuring that language is never a barrier to global tech opportunities.",
+      vision: "To be the leading catalyst for digital inclusion in Africa, where every youth, regardless of their native tongue, can master technology and compete on a global stage.",
+      mission: "To empower marginalized African youths through accessible, localized tech education and to deliver innovative IT solutions that drive local and global impact.",
+      objectives: [
+        "Provide tech education in Igbo, Hausa, Yoruba, and Pidgin.",
+        "Deliver world-class software development and IT support services.",
+        "Bridge the employment gap for marginalized youths in the tech industry.",
+        "Foster a community of localized tech innovators across Africa."
+      ],
+      values: {
+        title: "Our Core Values",
+        items: [
+          { title: "Inclusion", desc: "Breaking barriers for everyone." },
+          { title: "Innovation", desc: "Localized solutions for global problems." },
+          { title: "Excellence", desc: "World-class standards in every tongue." }
+        ]
+      }
     },
     services: {
       title: "Our Services",
@@ -55,6 +76,7 @@ export const translations = {
     nav: {
       home: "Mbido",
       services: "Ọrụ Anyị",
+      about: "Gbasara Anyị",
       academy: "Ụlọ Akwụkwọ",
       projects: "Ihe Anyị Mere",
       blog: "Blọọgụ",
@@ -67,12 +89,57 @@ export const translations = {
       ctaStart: "Malite Ịmụ Ihe Efere",
       ctaHire: "Were Ọrụ Anyị",
     },
-    // ... other sections would follow similar pattern
+    about: {
+      title: "Gbasara PasserTech",
+      summary: "PasserTech IT Service bụ ụlọ ọrụ teknụzụ na-arụ ọrụ iji jikọta ọdịiche dijitalụ n'Africa. Anyị na-arụ ọrụ n'inye ọrụ IT dị elu na agụmakwụkwọ teknụzụ n'asụsụ obodo.",
+      vision: "Ịbụ onye isi na-eme ka nsonye dijitalụ n'Africa, ebe onye ọ bụla ntorobịa nwere ike ịmụta teknụzụ n'asụsụ ha.",
+      mission: "Inye ndị ntorobịa Africa ike site na agụmakwụkwọ teknụzụ n'asụsụ ha na ịnye ọrụ IT ọhụrụ.",
+      objectives: [
+        "Inye agụmakwụkwọ teknụzụ n'asụsụ Igbo, Hausa, Yoruba, na Pidgin.",
+        "Ịnye ọrụ mmepe ngwanrọ na nkwado IT kachasị mma.",
+        "Ijikọta oghere ọrụ maka ndị ntorobịa n'ime ụlọ ọrụ teknụzụ.",
+        "Ịzụlite obodo nke ndị na-emepụta teknụzụ n'Africa."
+      ],
+      values: {
+        title: "Ụkpụrụ Anyị",
+        items: [
+          { title: "Nsonye", desc: "Ịkwụsị ihe mgbochi maka onye ọ bụla." },
+          { title: "Ihe Ọhụrụ", desc: "Ngwọta mpaghara maka nsogbu zuru ụwa ọnụ." },
+          { title: "Ọmarịcha", desc: "Ụkpụrụ kachasị mma n'asụsụ ọ bụla." }
+        ]
+      }
+    },
+    services: {
+      title: "Ọrụ Anyị",
+      software: "Mmepe Ngwanrọ",
+      cloud: "Cloud Engineering",
+      itSupport: "Nkwado IT",
+      customApps: "Ngwa Ahaziri Onwe",
+    },
+    academy: {
+      title: "Ụlọ Akwụkwọ Nkà na Ụzụ",
+      subtitle: "Mụta nkà na ụzụ n'asụsụ kachasị mma n'asụsụ nne gị.",
+      courses: {
+        html: "HTML na CSS",
+        python: "Python",
+        webDev: "Mmepe Weebụ",
+        fullStack: "Full-Stack Mmepe",
+      },
+      enroll: "Debanye aha ugbu a",
+    },
+    contact: {
+      title: "Kpọtụrụ Anyị",
+      name: "Aha",
+      email: "Email",
+      message: "Ozi",
+      send: "Ziga Ozi",
+    },
   },
   ha: {
     nav: {
       home: "Gida",
       services: "Ayyukanmu",
+      about: "Game da Mu",
       academy: "Makarantar",
       projects: "Ayyukanmu",
       blog: "Blog",
@@ -85,11 +152,57 @@ export const translations = {
       ctaStart: "Fara Koyo Kyauta",
       ctaHire: "Hayar Ayyukanmu",
     },
+    about: {
+      title: "Game da PasserTech",
+      summary: "PasserTech IT Service babban kamfani ne na fasaha wanda aka sadaukar domin dinke barakar dijital a Afirka. Mun kware wajen samar da ayyukan IT masu inganci da ilimin fasaha a cikin harsunan gida.",
+      vision: "Don zama babban jagora ga hadewar dijital a Afirka, inda kowane matashi zai iya ƙwarewar fasaha da yarensu.",
+      mission: "Don ba wa matasan Afirka damar samun ilimin fasaha a cikin harsunansu da kuma samar da sabbin hanyoyin IT.",
+      objectives: [
+        "Samar da ilimin fasaha a harsunan Igbo, Hausa, Yoruba, da Pidgin.",
+        "Bayar da ingantaccen software da ayyukan tallafin IT.",
+        "Dinke barakar samar da aikin yi ga matasa a fannin fasaha.",
+        "Gina al'ummar masu samar da fasaha a Afirka."
+      ],
+      values: {
+        title: "Muhimman Darajojinmu",
+        items: [
+          { title: "Inclusion", desc: "Breaking barriers for everyone." },
+          { title: "Innovation", desc: "Localized solutions for global problems." },
+          { title: "Excellence", desc: "World-class standards in every tongue." }
+        ]
+      }
+    },
+    services: {
+      title: "Ayyukanmu",
+      software: "Haɓaka Software",
+      cloud: "Cloud Engineering",
+      itSupport: "Taimakon IT",
+      customApps: "Custom Apps",
+    },
+    academy: {
+      title: "Makarantar Fasaha",
+      subtitle: "Koyi fasahar zamani a cikin yaren da ka fi so.",
+      courses: {
+        html: "HTML & CSS",
+        python: "Python",
+        webDev: "Web Development",
+        fullStack: "Full-Stack Development",
+      },
+      enroll: "Yi rajista yanzu",
+    },
+    contact: {
+      title: "Tuntube Mu",
+      name: "Suna",
+      email: "Email",
+      message: "Saƙo",
+      send: "Aika Saƙo",
+    },
   },
   yo: {
     nav: {
       home: "Ile",
       services: "Awọn Iṣẹ Wa",
+      about: "Nipa Wa",
       academy: "Ile-ẹkọ",
       projects: "Awọn Iṣẹ",
       blog: "Bulọọgi",
@@ -97,16 +210,62 @@ export const translations = {
       joinFree: "Darapọ mọ Kilasi Ọfẹ",
     },
     hero: {
-      title: "Kọ ẹkọ koodu ni ede rẹ. Kọ ọjọ iwaju.",
+      title: "Kọ ẹkọ koodu ni ede r rẹ. Kọ ọjọ iwaju.",
       subtitle: "Fifi agbara fun awọn ọdọ lati kọ awọn iṣẹ agbaye laisi awọn idena ede — ni Igbo, Hausa, Yoruba, ati Pidgin.",
       ctaStart: "Bẹrẹ Ẹkọ Ọfẹ",
       ctaHire: "Gba Awọn Iṣẹ Wa",
+    },
+    about: {
+      title: "Nipa PasserTech",
+      summary: "PasserTech IT Service jẹ ile-iṣẹ imọ-ẹrọ aṣáájú-ọnà ti a ṣe igbẹhin si didi pipin oni-nọmba ni Afirika. A ṣe amọja ni ipese awọn iṣẹ IT ti o ga ati ẹkọ imọ-ẹrọ ni awọn ede agbegbe.",
+      vision: "Lati jẹ ayase asiwaju fun ifisi oni-nọmba ni Afirika, nibiti gbogbo ọdọ le gba imọ-ẹrọ ni ede abinibi wọn.",
+      mission: "Lati fun awọn ọdọ Afirika ni agbara nipasẹ ẹkọ imọ-ẹrọ ni ede wọn ati lati fi awọn ojutu IT tuntun han.",
+      objectives: [
+        "Pese ẹkọ imọ-ẹrọ ni ede Igbo, Hausa, Yoruba, ati Pidgin.",
+        "Fi sọfitiwia agbaye ati awọn iṣẹ atilẹyin IT han.",
+        "Didi aafo iṣẹ fun awọn ọdọ ni ile-iṣẹ imọ-ẹrọ.",
+        "Ṣe abojuto agbegbe ti awọn olupilẹṣẹ imọ-ẹrọ ni Afirika."
+      ],
+      values: {
+        title: "Awọn Iye Pataki Wa",
+        items: [
+          { title: "Inclusion", desc: "Breaking barriers for everyone." },
+          { title: "Innovation", desc: "Localized solutions for global problems." },
+          { title: "Excellence", desc: "World-class standards in every tongue." }
+        ]
+      }
+    },
+    services: {
+      title: "Awọn Iṣẹ Wa",
+      software: "Idagbasoke Sọfitiwia",
+      cloud: "Cloud Engineering",
+      itSupport: "Atilẹyin IT",
+      customApps: "Awọn Ohun elo Ti ara ẹni",
+    },
+    academy: {
+      title: "Ile-ẹkọ Imọ-ẹrọ",
+      subtitle: "Kọ ẹkọ imọ-ẹrọ ni ede abinibi rẹ.",
+      courses: {
+        html: "HTML & CSS",
+        python: "Python",
+        webDev: "Idagbasoke Oju-iwe Ayelujara",
+        fullStack: "Full-Stack Idagbasoke",
+      },
+      enroll: "Forukọsilẹ bayi",
+    },
+    contact: {
+      title: "Kan si Wa",
+      name: "Orukọ",
+      email: "Email",
+      message: "Ifiranṣẹ",
+      send: "Fi Ifiranṣẹ Ranṣẹ",
     },
   },
   pcm: {
     nav: {
       home: "Home",
       services: "Our Work",
+      about: "About Us",
       academy: "Academy",
       projects: "Project Dem",
       blog: "Blog",
@@ -118,6 +277,51 @@ export const translations = {
       subtitle: "Empower youths to build global careers without language wahala — for Igbo, Hausa, Yoruba, and Pidgin.",
       ctaStart: "Start Learning for Free",
       ctaHire: "Hire Us",
+    },
+    about: {
+      title: "About PasserTech",
+      summary: "PasserTech IT Service na technology company way dey help people for Africa. We sabi how to give better IT services and teach tech for our local languages.",
+      vision: "To be the leader for digital inclusion for Africa, where every youth fit sabi tech for their own language.",
+      mission: "To empower African youths with tech education for their language and give better IT solutions.",
+      objectives: [
+        "Give tech education for Igbo, Hausa, Yoruba, and Pidgin.",
+        "Give world-class software development and IT support services.",
+        "Help marginalized youths find work for tech industry.",
+        "Build community of tech people for Africa."
+      ],
+      values: {
+        title: "Our Core Values",
+        items: [
+          { title: "Inclusion", desc: "Breaking barriers for everyone." },
+          { title: "Innovation", desc: "Localized solutions for global problems." },
+          { title: "Excellence", desc: "World-class standards in every tongue." }
+        ]
+      }
+    },
+    services: {
+      title: "Our Work",
+      software: "Software Development",
+      cloud: "Cloud Engineering",
+      itSupport: "IT Support",
+      customApps: "Custom Apps",
+    },
+    academy: {
+      title: "Better Tech Academy",
+      subtitle: "Learn tech for your own language way you like.",
+      courses: {
+        html: "HTML & CSS",
+        python: "Python",
+        webDev: "Web Development",
+        fullStack: "Full-Stack Development",
+      },
+      enroll: "Register Now",
+    },
+    contact: {
+      title: "Talk to Us",
+      name: "Name",
+      email: "Email",
+      message: "Message",
+      send: "Send Message",
     },
   },
 };

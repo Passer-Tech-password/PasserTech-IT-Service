@@ -13,11 +13,42 @@ import {
   Play, 
   Clock,
   MoreVertical,
-  CheckCircle2
+  CheckCircle2,
+  Contact2,
+  Printer,
+  Download,
+  Loader2
 } from "lucide-react";
+import { useAuth } from "@/lib/auth";
+import { db } from "@/lib/firebase";
+import { doc, updateDoc } from "firebase/firestore";
 
 const StaffDashboard = () => {
   const [activeTab, setActiveTab] = useState("classes");
+  const { profile } = useAuth();
+  const [requestingID, setRequestingID] = useState(false);
+
+  const handleRequestID = async () => {
+    if (!profile) return;
+    setRequestingID(true);
+    try {
+      const userRef = doc(db, "users", profile.uid);
+      await updateDoc(userRef, {
+        idCardRequested: true,
+        idCardStatus: "pending"
+      });
+      alert("ID Card request submitted successfully!");
+    } catch (error) {
+      console.error("Error requesting ID card:", error);
+      alert("Failed to request ID card.");
+    } finally {
+      setRequestingID(false);
+    }
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
 
   const myClasses = [
     { title: "HTML & CSS in Igbo", students: 42, nextLesson: "Today, 4:00 PM", progress: 65 },
@@ -62,11 +93,20 @@ const StaffDashboard = () => {
             <Calendar className="w-5 h-5" />
             <span>Schedule</span>
           </button>
+          <button
+            onClick={() => setActiveTab("idcard")}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
+              activeTab === "idcard" ? "bg-primary text-background shadow-lg" : "text-foreground/60 hover:bg-white/5"
+            }`}
+          >
+            <Contact2 className="w-5 h-5" />
+            <span>ID Card</span>
+          </button>
         </aside>
 
         {/* Mobile Tabs */}
         <div className="lg:hidden flex border-b border-white/5 p-2 gap-2 overflow-x-auto">
-          {["classes", "students", "schedule"].map(tab => (
+          {["classes", "students", "schedule", "idcard"].map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -201,8 +241,135 @@ const StaffDashboard = () => {
               </div>
             </div>
           )}
+
+          {activeTab === "idcard" && (
+            <div className="space-y-8">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div>
+                  <h1 className="text-3xl font-extrabold mb-2">Staff ID Card</h1>
+                  <p className="text-foreground/60">Generate and print your official PasserTech ID card.</p>
+                </div>
+                <div className="flex gap-4">
+                  {!profile?.idCardRequested ? (
+                    <button 
+                      onClick={handleRequestID}
+                      disabled={requestingID}
+                      className="flex items-center justify-center gap-2 bg-accent text-background px-6 py-3 rounded-2xl font-bold transition-all hover:scale-105 active:scale-95 shadow-lg shadow-accent/20 disabled:opacity-50"
+                    >
+                      {requestingID ? <Loader2 className="w-5 h-5 animate-spin" /> : <Contact2 className="w-5 h-5" />}
+                      Request ID Card
+                    </button>
+                  ) : profile?.idCardStatus !== "approved" ? (
+                    <div className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-orange-500/10 border border-orange-500/20 text-orange-500 font-bold text-sm">
+                      <Clock className="w-5 h-5" />
+                      ID Request Pending
+                    </div>
+                  ) : (
+                    <button 
+                      onClick={handlePrint}
+                      className="flex items-center justify-center gap-2 bg-primary text-background px-6 py-3 rounded-2xl font-bold transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/20"
+                    >
+                      <Printer className="w-5 h-5" />
+                      Print ID Card
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex flex-col items-center justify-center py-12">
+                {/* ID Card Preview */}
+                <div id="printable-id-card" className="w-[350px] h-[500px] bg-slate-900 border-2 border-primary/30 rounded-[2.5rem] overflow-hidden relative shadow-2xl flex flex-col items-center p-8 text-center print:shadow-none print:border-primary">
+                  {/* Decorative Elements */}
+                  <div className="absolute top-0 left-0 w-full h-32 bg-primary/10 -skew-y-6 origin-top-left" />
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl" />
+                  
+                  {/* Logo */}
+                  <div className="relative z-10 mb-8 mt-4">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                        <span className="text-background font-bold text-lg">P</span>
+                      </div>
+                      <span className="text-xl font-bold tracking-tight text-white">
+                        Passer<span className="text-primary">Tech</span>
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Photo Placeholder */}
+                  <div className="relative z-10 w-32 h-32 rounded-3xl border-4 border-primary/20 p-1 mb-6 bg-slate-800">
+                    <div className="w-full h-full rounded-2xl bg-slate-700 flex items-center justify-center overflow-hidden">
+                      <Users className="w-12 h-12 text-foreground/20" />
+                    </div>
+                  </div>
+
+                  {/* Info */}
+                  <div className="relative z-10 space-y-1 mb-8">
+                    <h2 className="text-2xl font-bold text-white uppercase tracking-tight">{profile?.displayName || "Staff Member"}</h2>
+                    <p className="text-primary font-bold uppercase tracking-widest text-xs">{profile?.position || "Staff"}</p>
+                  </div>
+
+                  {/* Details */}
+                  <div className="relative z-10 w-full grid grid-cols-1 gap-4 text-left border-t border-white/5 pt-8 mb-8">
+                    <div>
+                      <p className="text-[10px] text-foreground/40 font-bold uppercase tracking-widest mb-1">Employee ID</p>
+                      <p className="text-sm font-mono text-white">PT-{profile?.uid.substring(0, 8).toUpperCase()}</p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-foreground/40 font-bold uppercase tracking-widest mb-1">Email</p>
+                      <p className="text-sm font-medium text-white truncate w-full">{profile?.email}</p>
+                    </div>
+                  </div>
+
+                  {/* Footer */}
+                  <div className="relative z-10 mt-auto">
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20">
+                      <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                      <span className="text-[10px] font-bold text-primary uppercase tracking-widest">Official Staff</span>
+                    </div>
+                  </div>
+
+                  {/* Signature area */}
+                  <div className="absolute bottom-12 right-8 opacity-20">
+                    <div className="w-24 h-0.5 bg-white/50 mb-1" />
+                    <p className="text-[8px] text-white/50 text-right uppercase">Authorized Signature</p>
+                  </div>
+                </div>
+
+                <div className="mt-12 max-w-md text-center">
+                  <p className="text-foreground/40 text-sm leading-relaxed">
+                    Note: This ID card is only valid for active PasserTech staff. For official use only.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
         </main>
       </div>
+
+      <style jsx global>{`
+        @media print {
+          body * {
+            visibility: hidden;
+          }
+          #printable-id-card, #printable-id-card * {
+            visibility: visible;
+          }
+          #printable-id-card {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid #22c55e !important;
+            background-color: #0f172a !important;
+            -webkit-print-color-adjust: exact;
+          }
+          .bg-slate-900 { background-color: #0f172a !important; }
+          .bg-primary { background-color: #22c55e !important; }
+          .text-primary { color: #22c55e !important; }
+          .text-white { color: #ffffff !important; }
+          .bg-primary\/10 { background-color: rgba(34, 197, 94, 0.1) !important; }
+        }
+      `}</style>
     </ProtectedRoute>
   );
 };

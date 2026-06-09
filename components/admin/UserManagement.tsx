@@ -53,6 +53,17 @@ const UserManagement = () => {
     }
   };
 
+  const handleApproveID = async (userId: string) => {
+    try {
+      await updateDoc(doc(db, "users", userId), {
+        idCardStatus: "approved"
+      });
+      alert("ID Card request approved!");
+    } catch (error) {
+      console.error("Error approving ID card:", error);
+    }
+  };
+
   const handleToggleRole = async (userId: string, currentRole: string) => {
     const newRole = currentRole === "admin" ? "staff" : "admin";
     if (!window.confirm(`Are you sure you want to change this user to ${newRole}?`)) return;
@@ -157,17 +168,29 @@ const UserManagement = () => {
                             ) : (
                               <Users className="w-4 h-4 text-blue-500" />
                             )}
-                            <span className="text-xs font-bold capitalize">{user.role}</span>
+                            <div className="flex flex-col">
+                              <span className="text-xs font-bold capitalize">{user.role}</span>
+                              {user.position && <span className="text-[10px] text-foreground/40">{user.position}</span>}
+                            </div>
                           </div>
                         </td>
                         <td className="px-6 py-4">
-                          {user.role !== "student" && (
-                            <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${
-                              user.isApproved ? "bg-primary/10 text-primary" : "bg-accent/10 text-accent"
-                            }`}>
-                              {user.isApproved ? "Approved" : "Pending"}
-                            </span>
-                          )}
+                          <div className="flex flex-col gap-1">
+                            {user.role !== "student" && (
+                              <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest inline-block text-center ${
+                                user.isApproved ? "bg-primary/10 text-primary" : "bg-accent/10 text-accent"
+                              }`}>
+                                {user.isApproved ? "Approved" : "Pending"}
+                              </span>
+                            )}
+                            {user.idCardRequested && (
+                              <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest inline-block text-center ${
+                                user.idCardStatus === "approved" ? "bg-blue-500/10 text-blue-500" : "bg-orange-500/10 text-orange-500"
+                              }`}>
+                                ID: {user.idCardStatus || "pending"}
+                              </span>
+                            )}
+                          </div>
                         </td>
                         <td className="px-6 py-4 text-right">
                           <div className="flex justify-end gap-2">
@@ -178,6 +201,15 @@ const UserManagement = () => {
                                 title="Approve Staff"
                               >
                                 <CheckCircle className="w-4 h-4" />
+                              </button>
+                            )}
+                            {user.idCardRequested && user.idCardStatus !== "approved" && (
+                              <button 
+                                onClick={() => handleApproveID(user.id)}
+                                className="p-2 rounded-lg bg-blue-500/10 text-blue-500 hover:bg-blue-500 hover:text-white transition-all"
+                                title="Approve ID Card"
+                              >
+                                <Contact2 className="w-4 h-4" />
                               </button>
                             )}
                             <button 

@@ -14,6 +14,10 @@ interface UserProfile {
   displayName: string | null;
   role: UserRole;
   isApproved: boolean;
+  position?: string;
+  phone?: string;
+  idCardRequested?: boolean;
+  idCardStatus?: "pending" | "approved" | "rejected";
 }
 
 interface AuthContextType {

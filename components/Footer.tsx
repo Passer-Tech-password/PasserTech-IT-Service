@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Key, Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from "lucide-react";
+import { Key, Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, Youtube, Music2, MessageCircle, Globe } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 
 import Image from "next/image";
@@ -32,11 +32,21 @@ const Footer = () => {
             <p className="text-foreground/60 text-sm leading-relaxed">
               Empowering marginalized youths to build global careers without language barriers — in Igbo, Hausa, Yoruba, and Pidgin.
             </p>
-            <div className="flex items-center gap-4">
-              {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
+            <div className="flex flex-wrap items-center gap-3">
+              {[
+                { Icon: Facebook, label: "Facebook" },
+                { Icon: Twitter, label: "Twitter" },
+                { Icon: Instagram, label: "Instagram" },
+                { Icon: Linkedin, label: "LinkedIn" },
+                { Icon: Youtube, label: "YouTube" },
+                { Icon: Music2, label: "TikTok" },
+                { Icon: MessageCircle, label: "WhatsApp" },
+                { Icon: Globe, label: "Threads" }
+              ].map(({ Icon, label }, i) => (
                 <a
                   key={i}
                   href="#"
+                  title={label}
                   className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary hover:text-background transition-all"
                 >
                   <Icon className="w-5 h-5" />
@@ -49,10 +59,17 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-bold mb-6">Quick Links</h3>
             <ul className="space-y-4">
-              {[t.nav.home, t.nav.services, t.nav.academy, t.nav.projects, t.nav.blog].map((link, i) => (
+              {[
+                { name: t.nav.home, href: "/" },
+                { name: t.nav.about, href: "/about" },
+                { name: t.nav.services, href: "/services" },
+                { name: t.nav.academy, href: "/academy" },
+                { name: t.nav.projects, href: "/projects" },
+                { name: t.nav.blog, href: "/blog" }
+              ].map((link, i) => (
                 <li key={i}>
-                  <Link href="#" className="text-foreground/60 hover:text-primary transition-colors text-sm">
-                    {link}
+                  <Link href={link.href} className="text-foreground/60 hover:text-primary transition-colors text-sm">
+                    {link.name}
                   </Link>
                 </li>
               ))}
@@ -79,15 +96,15 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-sm text-foreground/60">
                 <MapPin className="w-5 h-5 text-primary shrink-0" />
-                <span>Enugu, Nigeria</span>
+                <span>Awka,Anambar State,Nigeria</span>
               </li>
               <li className="flex items-center gap-3 text-sm text-foreground/60">
                 <Phone className="w-5 h-5 text-primary shrink-0" />
-                <span>+234 800 123 4567</span>
+                <span>+234 905 097 9342</span>
               </li>
               <li className="flex items-center gap-3 text-sm text-foreground/60">
                 <Mail className="w-5 h-5 text-primary shrink-0" />
-                <span>hello@passertech.com</span>
+                <span>passertech.ent@gmail.com</span>
               </li>
             </ul>
           </div>

@@ -79,7 +79,7 @@ const ContactClient = () => {
                 </div>
                 <div>
                   <h4 className="text-lg font-bold mb-1">Visit Us</h4>
-                  <p className="text-foreground/60">Awka,Anambar, Nigeria</p>
+                  <p className="text-foreground/60">Awka, Anambar State, Nigeria</p>
                 </div>
               </div>
             </div>
