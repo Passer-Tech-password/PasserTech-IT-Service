@@ -5,6 +5,7 @@ import { LanguageProvider } from "@/lib/LanguageContext";
 import { AuthProvider } from "@/lib/auth";
 import { ContentProvider } from "@/lib/ContentContext";
 import LayoutClient from "./LayoutClient";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -75,6 +76,7 @@ export default function RootLayout({
             </LanguageProvider>
           </ContentProvider>
         </AuthProvider>
+        <Analytics />
       </body>
     </html>
   );
