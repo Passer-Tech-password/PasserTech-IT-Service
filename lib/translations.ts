@@ -56,6 +56,16 @@ export const translations = {
     academy: {
       title: "Multi-Tongue Tech Academy",
       subtitle: "Master high-demand tech skills in your preferred local language.",
+      communityTitle: "Choose Your Community",
+      communitySubtitle: "Join a community to start your learning journey.",
+      communities: {
+        igbo: "Igbo Community",
+        hausa: "Hausa Community",
+        yoruba: "Yoruba Community",
+        english: "English Community",
+        pidgin: "Pidgin Community",
+      },
+      joinCommunity: "Join Community",
       courses: {
         html: "HTML & CSS",
         python: "Python",
@@ -119,6 +129,16 @@ export const translations = {
     academy: {
       title: "Ụlọ Akwụkwọ Nkà na Ụzụ",
       subtitle: "Mụta nkà na ụzụ n'asụsụ kachasị mma n'asụsụ nne gị.",
+      communityTitle: "Họrọ Obodo Gị",
+      communitySubtitle: "Soro otu obodo malite njem mmụta gị.",
+      communities: {
+        igbo: "Obodo Igbo",
+        hausa: "Obodo Hausa",
+        yoruba: "Obodo Yoruba",
+        english: "Obodo Bekee",
+        pidgin: "Obodo Pidgin",
+      },
+      joinCommunity: "Soro Obodo",
       courses: {
         html: "HTML na CSS",
         python: "Python",
@@ -182,6 +202,16 @@ export const translations = {
     academy: {
       title: "Makarantar Fasaha",
       subtitle: "Koyi fasahar zamani a cikin yaren da ka fi so.",
+      communityTitle: "Zabi Al'ummarka",
+      communitySubtitle: "Shiga al'umma don fara tafiyar koyo.",
+      communities: {
+        igbo: "Al'ummar Igbo",
+        hausa: "Al'ummar Hausa",
+        yoruba: "Al'ummar Yoruba",
+        english: "Al'ummar Turanci",
+        pidgin: "Al'ummar Pidgin",
+      },
+      joinCommunity: "Shiga Al'umma",
       courses: {
         html: "HTML & CSS",
         python: "Python",
@@ -245,6 +275,16 @@ export const translations = {
     academy: {
       title: "Ile-ẹkọ Imọ-ẹrọ",
       subtitle: "Kọ ẹkọ imọ-ẹrọ ni ede abinibi rẹ.",
+      communityTitle: "Yan Agbegbe Rẹ",
+      communitySubtitle: "Darapọ mọ agbegbe kan lati bẹrẹ irin-ajo ẹkọ rẹ.",
+      communities: {
+        igbo: "Agbegbe Igbo",
+        hausa: "Agbegbe Hausa",
+        yoruba: "Agbegbe Yoruba",
+        english: "Agbegbe Gẹẹsi",
+        pidgin: "Agbegbe Pidgin",
+      },
+      joinCommunity: "Darapọ mọ Agbegbe",
       courses: {
         html: "HTML & CSS",
         python: "Python",
@@ -308,6 +348,16 @@ export const translations = {
     academy: {
       title: "Better Tech Academy",
       subtitle: "Learn tech for your own language way you like.",
+      communityTitle: "Choose Your Community",
+      communitySubtitle: "Join one community to start your learning journey.",
+      communities: {
+        igbo: "Igbo Community",
+        hausa: "Hausa Community",
+        yoruba: "Yoruba Community",
+        english: "English Community",
+        pidgin: "Pidgin Community",
+      },
+      joinCommunity: "Join Community",
       courses: {
         html: "HTML & CSS",
         python: "Python",

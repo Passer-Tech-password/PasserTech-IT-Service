@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { LanguageProvider } from "@/lib/LanguageContext";
 import { AuthProvider } from "@/lib/auth";
 import { ContentProvider } from "@/lib/ContentContext";
+import LayoutClient from "./LayoutClient";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -72,9 +71,7 @@ export default function RootLayout({
         <AuthProvider>
           <ContentProvider>
             <LanguageProvider>
-              <Navbar />
-              <main className="flex-grow">{children}</main>
-              <Footer />
+              <LayoutClient>{children}</LayoutClient>
             </LanguageProvider>
           </ContentProvider>
         </AuthProvider>

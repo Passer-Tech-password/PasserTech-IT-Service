@@ -153,7 +153,7 @@ const Navbar = () => {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="absolute right-0 top-0 bottom-0 w-[85%] max-w-sm bg-background border-l border-white/10 p-8 shadow-2xl flex flex-col"
+              className="absolute right-0 top-0 bottom-0 w-[85%] max-w-sm bg-background border-l border-white/10 p-8 shadow-2xl flex flex-col overflow-y-auto"
             >
               <div className="flex items-center justify-between mb-12">
                 <span className="text-xl font-bold">Menu</span>

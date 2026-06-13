@@ -3,25 +3,95 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/LanguageContext";
-import { Clock, GraduationCap, Users, Zap, Heart, Loader2 } from "lucide-react";
+import { Clock, GraduationCap, Users, Zap, Heart, Loader2, Globe, ArrowRight } from "lucide-react";
 import JoinFreeClassModal from "@/components/JoinFreeClassModal";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { useRouter } from "next/navigation";
 
 const AcademyClient = () => {
   const { language, t } = useLanguage();
+  const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [courses, setCourses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCommunity, setSelectedCommunity] = useState<string | null>(null);
+
+  const communities = [
+    { id: "igbo", name: (t.academy as any).communities.igbo, color: "bg-orange-500" },
+    { id: "hausa", name: (t.academy as any).communities.hausa, color: "bg-green-500" },
+    { id: "yoruba", name: (t.academy as any).communities.yoruba, color: "bg-blue-500" },
+    { id: "english", name: (t.academy as any).communities.english, color: "bg-purple-500" },
+    { id: "pidgin", name: (t.academy as any).communities.pidgin, color: "bg-red-500" },
+  ];
 
   useEffect(() => {
     const q = query(collection(db, "courses"), orderBy("createdAt", "desc"));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      setCourses(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-      setLoading(false);
-    });
+    const unsubscribe = onSnapshot(q, 
+      (snapshot) => {
+        setCourses(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        setLoading(false);
+      },
+      (error) => {
+        console.log("Course snapshot error (likely permissions - normal when no courses yet):", error);
+        setLoading(false);
+      }
+    );
     return () => unsubscribe();
   }, []);
+
+  const handleJoinCommunity = (communityId: string) => {
+    setSelectedCommunity(communityId);
+    // Save to local storage or session to persist the choice during registration
+    localStorage.setItem("selectedCommunity", communityId);
+    router.push("/academy/register");
+  };
+
+  if (!selectedCommunity) {
+    return (
+      <div className="pt-32 pb-24 bg-african-pattern min-h-screen">
+        <div className="container mx-auto px-4 md:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center max-w-3xl mx-auto mb-16"
+          >
+            <h1 className="text-4xl md:text-6xl font-extrabold mb-6">
+              {(t.academy as any).communityTitle}
+            </h1>
+            <p className="text-xl text-foreground/60">
+              {(t.academy as any).communitySubtitle}
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {communities.map((community, i) => (
+              <motion.div
+                key={community.id}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: i * 0.1 }}
+                className="group relative p-8 rounded-[2.5rem] bg-slate-900 border border-white/5 hover:border-primary/30 transition-all overflow-hidden text-center"
+              >
+                <div className={`absolute top-0 right-0 w-32 h-32 ${community.color}/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:${community.color}/10 transition-colors`} />
+                <div className={`w-16 h-16 ${community.color}/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform`}>
+                  <Globe className={`w-8 h-8 ${community.color.replace('bg-', 'text-')}`} />
+                </div>
+                <h3 className="text-2xl font-bold mb-4">{community.name}</h3>
+                <button
+                  onClick={() => handleJoinCommunity(community.id)}
+                  className={`w-full ${community.color} text-background font-bold py-4 rounded-2xl flex items-center justify-center gap-2 hover:opacity-90 transition-all active:scale-95`}
+                >
+                  {(t.academy as any).joinCommunity}
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-32 pb-24">
@@ -32,12 +102,16 @@ const AcademyClient = () => {
           animate={{ opacity: 1, y: 0 }}
           className="max-w-3xl mx-auto"
         >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary font-bold text-xs uppercase tracking-widest mb-6">
+            <Globe className="w-4 h-4" />
+            {communities.find(c => c.id === selectedCommunity)?.name}
+          </div>
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
             Learn Tech in Your <span className="text-primary">Mother Tongue</span>
           </h1>
           <p className="text-base md:text-xl text-foreground/60 leading-relaxed px-4">
             Breaking language barriers in tech education. We provide high-quality
-            software engineering courses taught primarily in Igbo.
+            software engineering courses taught primarily in your chosen community language.
           </p>
         </motion.div>
       </section>
