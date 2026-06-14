@@ -404,23 +404,30 @@ const StaffDashboard = () => {
               </div>
 
               <div className="flex flex-col items-center justify-center py-12">
-                {/* ID Card Preview */}
-                <div id="printable-id-card" className="w-[350px] h-[500px] bg-slate-900 border-2 border-primary/30 rounded-[2.5rem] overflow-hidden relative shadow-2xl flex flex-col items-center p-8 text-center print:shadow-none print:border-primary">
-                  {/* Decorative Elements */}
-                  <div className="absolute top-0 left-0 w-full h-32 bg-primary/10 -skew-y-6 origin-top-left" />
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl" />
-                  
-                  {/* Logo */}
-                  <div className="relative z-10 mb-8 mt-4">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                        <span className="text-background font-bold text-lg">P</span>
-                      </div>
-                      <span className="text-xl font-bold tracking-tight text-white">
+              {/* ID Card Preview */}
+              <div id="printable-id-card" className="w-[350px] h-[500px] bg-slate-900 border-2 border-primary/30 rounded-[2.5rem] overflow-hidden relative shadow-2xl flex flex-col items-center p-8 text-center print:shadow-none print:border-primary">
+                {/* Decorative Elements */}
+                <div className="absolute top-0 left-0 w-full h-32 bg-primary/10 -skew-y-6 origin-top-left" />
+                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl" />
+                
+                {/* Logo */}
+                <div className="relative z-10 mb-8 mt-4">
+                  <div className="flex items-center gap-3 bg-slate-900/80 backdrop-blur-sm px-6 py-3 rounded-3xl border border-white/10">
+                    <div className="relative w-10 h-10 overflow-hidden rounded-xl">
+                      <img 
+                        src="/logo.png" 
+                        alt="PasserTech"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="text-left">
+                      <h1 className="text-lg font-bold tracking-tight text-white">
                         Passer<span className="text-primary">Tech</span>
-                      </span>
+                      </h1>
+                      <p className="text-xs text-foreground/40">Official Staff ID</p>
                     </div>
                   </div>
+                </div>
 
                   {/* Photo Placeholder */}
                   <div className="relative z-10 w-32 h-32 rounded-3xl border-4 border-primary/20 p-1 mb-6 bg-slate-800">

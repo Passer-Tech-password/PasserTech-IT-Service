@@ -12,12 +12,14 @@ export default function LayoutClient({
 }) {
   const pathname = usePathname();
   const isAdminRoute = pathname?.startsWith("/admin");
+  const isStaffRoute = pathname?.startsWith("/staff");
+  const isPrivateRoute = isAdminRoute || isStaffRoute;
 
   return (
     <>
-      {!isAdminRoute && <Navbar />}
-      <main className={`flex-grow ${isAdminRoute ? "p-0" : ""}`}>{children}</main>
-      {!isAdminRoute && <Footer />}
+      {!isPrivateRoute && <Navbar />}
+      <main className={`flex-grow ${isPrivateRoute ? "p-0" : ""}`}>{children}</main>
+      {!isPrivateRoute && <Footer />}
     </>
   );
 }

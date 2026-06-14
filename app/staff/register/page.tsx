@@ -130,7 +130,7 @@ const StaffRegister = () => {
 
   if (fetchingPositions) {
     return (
-      <div className="min-h-screen pt-32 pb-20 bg-african-pattern flex items-center justify-center px-4">
+      <div className="min-h-screen pt-32 pb-20 bg-slate-950 text-white flex items-center justify-center px-4">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="w-12 h-12 animate-spin text-primary" />
           <p className="text-foreground/70 text-lg">Loading available positions...</p>
@@ -140,7 +140,7 @@ const StaffRegister = () => {
   }
 
   return (
-    <div className="min-h-screen pt-32 pb-20 bg-african-pattern flex items-center justify-center px-4">
+    <div className="min-h-screen pt-32 pb-20 bg-slate-950 text-white flex items-center justify-center px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

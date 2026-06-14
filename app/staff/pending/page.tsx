@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const StaffPending = () => {
   return (
-    <div className="min-h-screen pt-32 pb-20 bg-african-pattern flex items-center justify-center px-4">
+    <div className="min-h-screen pt-32 pb-20 bg-slate-950 text-white flex items-center justify-center px-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}

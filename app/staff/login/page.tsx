@@ -30,15 +30,15 @@ const StaffLogin = () => {
   };
 
   return (
-    <div className="min-h-screen pt-32 pb-20 bg-african-pattern flex items-center justify-center px-4">
+    <div className="min-h-screen pt-32 pb-20 bg-slate-950 text-white flex items-center justify-center px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md bg-slate-900 border border-white/10 rounded-3xl p-8 md:p-12 shadow-2xl"
       >
         <div className="text-center mb-10">
-          <div className="w-16 h-16 bg-blue-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <UserCheck className="w-8 h-8 text-blue-500" />
+          <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <UserCheck className="w-8 h-8 text-primary" />
           </div>
           <h1 className="text-3xl font-bold mb-2">Staff Login</h1>
           <p className="text-foreground/60">Welcome back, PasserTech staff!</p>
@@ -59,7 +59,7 @@ const StaffLogin = () => {
                 required
                 type="email"
                 placeholder="staff@passertech.com"
-                className="w-full bg-background border border-white/10 rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full bg-background border border-white/10 rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-primary transition-colors"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -74,7 +74,7 @@ const StaffLogin = () => {
                 required
                 type="password"
                 placeholder="••••••••"
-                className="w-full bg-background border border-white/10 rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full bg-background border border-white/10 rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-primary transition-colors"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -84,7 +84,7 @@ const StaffLogin = () => {
           <button
             disabled={loading}
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-3 transition-all disabled:opacity-50 text-lg"
+            className="w-full bg-primary hover:bg-primary/90 text-background font-bold py-4 rounded-2xl flex items-center justify-center gap-3 transition-all disabled:opacity-50 text-lg"
           >
             {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "Staff Log In"}
           </button>
