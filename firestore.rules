@@ -8,10 +8,20 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    // Helper function to get user role with safe access
+    function userData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function userExists() {
+      return exists(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
     // Helper function to check user role
     function getRole() {
-      let userDoc = get(/databases/$(database)/documents/users/$(request.auth.uid));
-      return userDoc.exists ? userDoc.data.role : 'student';
+      return userExists() ? 
+        (userData().role is string ? userData().role : 'student') : 
+        'student';
     }
 
     function isAdmin() {
@@ -22,17 +32,21 @@ service cloud.firestore {
       return isAuthenticated() && (getRole() == 'staff' || getRole() == 'admin');
     }
 
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
     // Users Collection
     match /users/{userId} {
       allow read: if isAuthenticated();
-      allow create: if isAuthenticated() && request.auth.uid == userId;
-      allow update: if isAdmin() || (request.auth.uid == userId && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role', 'isApproved']));
+      allow create: if isOwner(userId);
+      allow update: if isAdmin() || (isOwner(userId) && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role', 'isApproved']));
       allow delete: if isAdmin();
     }
 
     // Site Content (Hero, etc.)
     match /siteContent/{document} {
-      allow read: if true; // Publicly readable
+      allow read: if true;
       allow write: if isAdmin();
     }
 
@@ -45,14 +59,14 @@ service cloud.firestore {
     // Enrollments
     match /enrollments/{enrollmentId} {
       allow read: if isStaff();
-      allow create: if true; // Public can enroll
+      allow create: if true;
       allow update, delete: if isAdmin();
     }
 
     // Contact Messages
     match /contacts/{contactId} {
       allow read: if isStaff();
-      allow create: if true; // Public can contact
+      allow create: if true;
       allow update, delete: if isAdmin();
     }
 
