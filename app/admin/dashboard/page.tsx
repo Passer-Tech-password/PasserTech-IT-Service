@@ -426,7 +426,7 @@ const AdminDashboard = () => {
                 </div>
                 <div className="flex flex-col items-center justify-center py-12">
                   {/* Printable ID Card */}
-                  <div id="printable-admin-id-card" className="w-[360px] h-[520px] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-3 border-primary/30 rounded-[2.8rem] overflow-hidden relative shadow-2xl shadow-primary/20 flex flex-col items-center p-8 text-center print:shadow-none print:border-none">
+                  <div id="printable-admin-id-card" className="w-[360px] h-[580px] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-3 border-primary/30 rounded-[2.8rem] overflow-hidden relative shadow-2xl shadow-primary/20 flex flex-col items-center p-8 text-center print:shadow-none print:border-none">
                     {/* Decorative Background Elements */}
                     <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-br from-primary/30 via-primary/10 to-transparent -skew-y-12 origin-top-left" />
                     <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full -mr-32 -mt-32 blur-3xl" />
@@ -476,23 +476,23 @@ const AdminDashboard = () => {
                     </div>
 
                     {/* Details Grid */}
-                    <div className="relative z-10 w-full space-y-6 border-t-2 border-primary/20 pt-8">
-                      <div className="grid grid-cols-2 gap-4 text-center">
-                        <div className="space-y-1">
-                          <p className="text-[9px] text-foreground/40 font-extrabold uppercase tracking-[0.3em] mb-1">ID Number</p>
-                          <p className="text-sm font-mono font-bold text-white bg-slate-800/60 px-3 py-2 rounded-xl border border-white/5">
+                    <div className="relative z-10 w-full space-y-8 border-t-3 border-primary/30 pt-8">
+                      <div className="grid grid-cols-1 gap-6">
+                        {/* ID Number */}
+                        <div className="space-y-2">
+                          <p className="text-[10px] text-foreground/50 font-black uppercase tracking-[0.4em]">ID Number</p>
+                          <p className="text-xl font-black font-mono text-white bg-gradient-to-r from-slate-800 to-slate-700 px-6 py-3 rounded-2xl border-2 border-white/10 shadow-lg shadow-primary/10">
                             EXEC-{profile?.uid?.substring(0, 8).toUpperCase() || "ADMIN001"}
                           </p>
                         </div>
-                        <div className="space-y-1">
-                          <p className="text-[9px] text-foreground/40 font-extrabold uppercase tracking-[0.3em] mb-1">Access Level</p>
-                          <p className="text-sm font-black text-primary bg-primary/10 px-3 py-2 rounded-xl border border-primary/30">
-                            LEVEL 0
+                        
+                        {/* Access Level */}
+                        <div className="space-y-2">
+                          <p className="text-[10px] text-foreground/50 font-black uppercase tracking-[0.4em]">Access Level</p>
+                          <p className="text-xl font-black text-primary bg-gradient-to-r from-primary/20 to-primary/10 px-6 py-3 rounded-2xl border-2 border-primary/40 shadow-lg shadow-primary/10">
+                            FULL ACCESS • LEVEL 0
                           </p>
                         </div>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-[10px] text-foreground/50 font-medium">Full Administrative Access</p>
                       </div>
                     </div>
 
