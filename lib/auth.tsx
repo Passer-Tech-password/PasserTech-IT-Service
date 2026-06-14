@@ -44,12 +44,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
       if (user) {
-        const docRef = doc(db, "users", user.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setProfile(docSnap.data() as UserProfile);
-        } else {
-          // Default profile if not found in Firestore
+        try {
+          const docRef = doc(db, "users", user.uid);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            setProfile(docSnap.data() as UserProfile);
+          } else {
+            // Default profile if not found in Firestore
+            setProfile({
+              uid: user.uid,
+              email: user.email,
+              displayName: user.displayName,
+              role: "student",
+              isApproved: true,
+            });
+          }
+        } catch (error) {
+          console.log("Error fetching user profile, using default student profile:", error);
+          // Fallback to default profile if Firestore read fails
           setProfile({
             uid: user.uid,
             email: user.email,
@@ -91,7 +103,14 @@ export const ProtectedRoute: React.FC<{
   useEffect(() => {
     if (!loading) {
       if (!profile) {
-        router.push("/login");
+        // Redirect to appropriate login based on allowed roles
+        if (allowedRoles?.includes("admin")) {
+          router.push("/admin/login");
+        } else if (allowedRoles?.includes("staff")) {
+          router.push("/staff/login");
+        } else {
+          router.push("/login");
+        }
       } else if (allowedRoles && !allowedRoles.includes(profile.role)) {
         router.push("/");
       } else if (profile.role === "staff" && !profile.isApproved) {
