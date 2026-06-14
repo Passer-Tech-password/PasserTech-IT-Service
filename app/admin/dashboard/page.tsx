@@ -433,7 +433,7 @@ const AdminDashboard = () => {
                     <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary/10 rounded-full -ml-24 -mb-24 blur-3xl" />
                     
                     {/* Company Logo Header */}
-                    <div className="relative z-10 w-full flex items-center justify-center mb-8 mt-2">
+                    <div className="relative z-40 w-full flex items-center justify-center mb-8 mt-2">
                       <div className="flex items-center gap-4 bg-slate-900/80 backdrop-blur-sm px-6 py-3 rounded-3xl border border-white/10">
                         <div className="relative w-12 h-12 overflow-hidden rounded-xl border-2 border-primary/30">
                           <img 
@@ -452,14 +452,14 @@ const AdminDashboard = () => {
                     </div>
 
                     {/* Photo Section */}
-                    <div className="relative z-10 w-36 h-36 rounded-[2rem] border-4 border-primary/50 p-2 mb-8 bg-gradient-to-br from-slate-800 to-slate-900 shadow-lg shadow-primary/10">
+                    <div className="relative z-40 w-36 h-36 rounded-[2rem] border-4 border-primary/50 p-2 mb-8 bg-gradient-to-br from-slate-800 to-slate-900 shadow-lg shadow-primary/10">
                       <div className="w-full h-full rounded-2xl bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center overflow-hidden border border-white/5">
                         <User className="w-16 h-16 text-primary/30" />
                       </div>
                     </div>
 
                     {/* Name and Position */}
-                    <div className="relative z-10 space-y-2 mb-10 px-4">
+                    <div className="relative z-40 space-y-2 mb-10 px-4">
                       <h2 className="text-2xl font-black text-white uppercase tracking-tighter leading-tight">
                         {adminData?.fullName || "PasserTech Admin"}
                       </h2>
@@ -469,27 +469,27 @@ const AdminDashboard = () => {
                     </div>
 
                     {/* EXECUTIVE BOARD - Highlighted */}
-                    <div className="relative z-10 mb-8">
+                    <div className="relative z-40 mb-8">
                       <div className="bg-gradient-to-r from-primary via-green-400 to-primary bg-clip-text text-transparent animate-pulse">
                         <span className="text-sm font-black uppercase tracking-[0.4em] drop-shadow-lg">EXECUTIVE BOARD</span>
                       </div>
                     </div>
 
                     {/* Details Grid */}
-                    <div className="relative z-10 w-full space-y-8 border-t-3 border-primary/30 pt-8">
+                    <div className="relative z-30 w-full space-y-8 border-t-3 border-primary/30 pt-8 mt-auto">
                       <div className="grid grid-cols-1 gap-6">
                         {/* ID Number */}
-                        <div className="space-y-2">
-                          <p className="text-[10px] text-foreground/50 font-black uppercase tracking-[0.4em]">ID Number</p>
-                          <p className="text-xl font-black font-mono text-white bg-gradient-to-r from-slate-800 to-slate-700 px-6 py-3 rounded-2xl border-2 border-white/10 shadow-lg shadow-primary/10">
+                        <div className="space-y-3">
+                          <p className="text-[11px] text-white/70 font-black uppercase tracking-[0.3em]">ID NUMBER</p>
+                          <p className="text-2xl font-black font-mono text-white bg-gradient-to-r from-slate-800 to-slate-700 px-6 py-4 rounded-2xl border-2 border-primary/30 shadow-xl shadow-primary/20">
                             EXEC-{profile?.uid?.substring(0, 8).toUpperCase() || "ADMIN001"}
                           </p>
                         </div>
                         
                         {/* Access Level */}
-                        <div className="space-y-2">
-                          <p className="text-[10px] text-foreground/50 font-black uppercase tracking-[0.4em]">Access Level</p>
-                          <p className="text-xl font-black text-primary bg-gradient-to-r from-primary/20 to-primary/10 px-6 py-3 rounded-2xl border-2 border-primary/40 shadow-lg shadow-primary/10">
+                        <div className="space-y-3">
+                          <p className="text-[11px] text-white/70 font-black uppercase tracking-[0.3em]">ACCESS LEVEL</p>
+                          <p className="text-2xl font-black text-primary bg-gradient-to-r from-primary/30 to-primary/10 px-6 py-4 rounded-2xl border-2 border-primary/50 shadow-xl shadow-primary/30">
                             FULL ACCESS • LEVEL 0
                           </p>
                         </div>
