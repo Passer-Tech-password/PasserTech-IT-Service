@@ -9,12 +9,43 @@ import { useRouter } from "next/navigation";
 import { UserPlus, Mail, Lock, Phone, User, Briefcase, Loader2 } from "lucide-react";
 import Link from "next/link";
 
+// Predefined job positions for PasserTech
+const JOB_POSITIONS = [
+  "Software Engineer",
+  "Frontend Developer",
+  "Backend Developer",
+  "Mobile App Developer",
+  "Full Stack Developer",
+  "UI/UX Designer",
+  "Product Designer",
+  "Graphic Designer",
+  "Tutor / Instructor",
+  "Senior Tutor",
+  "Academic Coordinator",
+  "IT Support Specialist",
+  "DevOps Engineer",
+  "Cloud Engineer",
+  "Data Scientist",
+  "Product Manager",
+  "Marketing Manager",
+  "Social Media Manager",
+  "Content Creator",
+  "Customer Support Representative",
+  "Operations Manager",
+  "Finance Officer",
+  "Human Resources (HR)",
+  "Chief Technology Officer (CTO)",
+  "Chief Executive Officer (CEO)",
+  "Other (Please specify below)",
+];
+
 const StaffRegister = () => {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     phone: "",
     position: "",
+    customPosition: "",
     role: "staff",
     password: "",
   });
@@ -28,6 +59,17 @@ const StaffRegister = () => {
     setError("");
 
     try {
+      // Determine the actual position to save
+      const finalPosition = formData.position === "Other (Please specify below)" 
+        ? formData.customPosition 
+        : formData.position;
+
+      if (!finalPosition) {
+        setError("Please select or enter a job position");
+        setLoading(false);
+        return;
+      }
+
       // 1. Create Auth User
       const { user } = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
 
@@ -40,8 +82,8 @@ const StaffRegister = () => {
         fullName: formData.fullName,
         email: formData.email,
         phone: formData.phone,
-        position: formData.position,
-        role: formData.role, // 'admin', 'staff'
+        position: finalPosition,
+        role: "staff",
         isApproved: false, // Must be approved by an existing admin
         createdAt: serverTimestamp(),
       });
@@ -123,34 +165,42 @@ const StaffRegister = () => {
             </div>
           </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground/70 ml-1">Job Position / Role</label>
-            <div className="relative">
-              <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground/40" />
-              <input
-                required
-                type="text"
-                placeholder="e.g. Senior Tutor, IT Support, CEO"
-                className="w-full bg-background border border-white/10 rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-primary transition-colors"
-                value={formData.position}
-                onChange={(e) => setFormData({ ...formData, position: e.target.value })}
-              />
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-foreground/70 ml-1">Job Position / Role</label>
+              <div className="relative">
+                <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground/40" />
+                <select
+                  required
+                  className="w-full bg-background border border-white/10 rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-primary transition-colors appearance-none"
+                  value={formData.position}
+                  onChange={(e) => setFormData({ ...formData, position: e.target.value })}
+                >
+                  <option value="">Select your role</option>
+                  {JOB_POSITIONS.map((pos, idx) => (
+                    <option key={idx} value={pos}>{pos}</option>
+                  ))}
+                </select>
+              </div>
             </div>
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground/70 ml-1">Account Type</label>
-            <div className="relative">
-              <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground/40" />
-              <select
-                className="w-full bg-background border border-white/10 rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-primary transition-colors appearance-none"
-                value={formData.role}
-                onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-              >
-                <option value="staff">Staff Member</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div>
+            
+            {/* Custom position field only shown if "Other" is selected */}
+            {formData.position === "Other (Please specify below)" && (
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground/70 ml-1">Enter Your Role</label>
+                <div className="relative">
+                  <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground/40" />
+                  <input
+                    required
+                    type="text"
+                    placeholder="e.g. Video Editor, QA Tester"
+                    className="w-full bg-background border border-white/10 rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-primary transition-colors"
+                    value={formData.customPosition}
+                    onChange={(e) => setFormData({ ...formData, customPosition: e.target.value })}
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="space-y-2">
