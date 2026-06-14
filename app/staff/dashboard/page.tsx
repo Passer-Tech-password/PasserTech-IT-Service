@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { ProtectedRoute } from "@/lib/auth";
+import { ProtectedRoute, useAuth } from "@/lib/auth";
+import { auth } from "@/lib/firebase";
 import { 
   Users, 
   BookOpen, 
@@ -17,16 +18,27 @@ import {
   Contact2,
   Printer,
   Download,
-  Loader2
+  Loader2,
+  LogOut,
+  Menu,
+  X,
+  User
 } from "lucide-react";
-import { useAuth } from "@/lib/auth";
 import { db } from "@/lib/firebase";
 import { doc, updateDoc } from "firebase/firestore";
+import { useRouter } from "next/navigation";
 
 const StaffDashboard = () => {
   const [activeTab, setActiveTab] = useState("classes");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const { profile } = useAuth();
+  const router = useRouter();
   const [requestingID, setRequestingID] = useState(false);
+
+  const handleLogout = async () => {
+    await auth.signOut();
+    router.push("/");
+  };
 
   const handleRequestID = async () => {
     if (!profile) return;
@@ -61,63 +73,118 @@ const StaffDashboard = () => {
     { name: "Emeka Uzor", course: "HTML & CSS", status: "Inactive", attendance: "45%" },
   ];
 
+  const menuItems = [
+    { id: "classes", icon: BookOpen, label: "My Classes" },
+    { id: "students", icon: Users, label: "Students" },
+    { id: "schedule", icon: Calendar, label: "Schedule" },
+    { id: "idcard", icon: Contact2, label: "ID Card" },
+  ];
+
   return (
     <ProtectedRoute allowedRoles={["staff", "admin"]}>
-      <div className="min-h-screen pt-24 bg-african-pattern flex flex-col lg:flex-row">
-        {/* Desktop Sidebar */}
-        <aside className="hidden lg:block w-72 p-6 border-r border-white/5 space-y-2 shrink-0">
-          <button
-            onClick={() => setActiveTab("classes")}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
-              activeTab === "classes" ? "bg-primary text-background shadow-lg" : "text-foreground/60 hover:bg-white/5"
-            }`}
-          >
-            <BookOpen className="w-5 h-5" />
-            <span>My Classes</span>
-          </button>
-          <button
-            onClick={() => setActiveTab("students")}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
-              activeTab === "students" ? "bg-primary text-background shadow-lg" : "text-foreground/60 hover:bg-white/5"
-            }`}
-          >
-            <Users className="w-5 h-5" />
-            <span>Students</span>
-          </button>
-          <button
-            onClick={() => setActiveTab("schedule")}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
-              activeTab === "schedule" ? "bg-primary text-background shadow-lg" : "text-foreground/60 hover:bg-white/5"
-            }`}
-          >
-            <Calendar className="w-5 h-5" />
-            <span>Schedule</span>
-          </button>
-          <button
-            onClick={() => setActiveTab("idcard")}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
-              activeTab === "idcard" ? "bg-primary text-background shadow-lg" : "text-foreground/60 hover:bg-white/5"
-            }`}
-          >
-            <Contact2 className="w-5 h-5" />
-            <span>ID Card</span>
-          </button>
+      <div className="min-h-screen bg-slate-950 text-white flex">
+        {/* Mobile Menu Overlay */}
+        {sidebarOpen && (
+          <div 
+            className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+
+        {/* Sidebar */}
+        <aside className={`
+          fixed lg:static inset-y-0 left-0 z-50
+          w-72 bg-slate-900 border-r border-white/10
+          transform transition-transform duration-300
+          ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+          flex flex-col overflow-y-auto
+        `}>
+          <div className="p-6 border-b border-white/10 shrink-0">
+            <div className="flex items-center gap-3">
+              <div className="relative w-10 h-10 overflow-hidden rounded-xl">
+                <img 
+                  src="/logo.png" 
+                  alt="PasserTech"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div>
+                <h1 className="font-bold text-lg">Passer<span className="text-primary">Tech</span></h1>
+                <p className="text-xs text-foreground/40">Staff Panel</p>
+              </div>
+            </div>
+          </div>
+
+          <nav className="p-4 space-y-1 flex-1 overflow-y-auto">
+            {menuItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => {
+                  setActiveTab(item.id);
+                  setSidebarOpen(false);
+                }}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
+                  activeTab === item.id ? "bg-primary text-background shadow-lg shadow-primary/20" : "text-foreground/60 hover:bg-white/5 hover:text-foreground"
+                }`}
+              >
+                <item.icon className="w-5 h-5" />
+                <span>{item.label}</span>
+              </button>
+            ))}
+          </nav>
+
+          <div className="p-4 border-t border-white/10 shrink-0">
+            <div className="flex items-center gap-3 mb-4 p-3 rounded-xl bg-white/5">
+              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
+                {(profile?.displayName?.charAt(0) || "S").toUpperCase()}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-white truncate">{profile?.displayName || "Staff Member"}</p>
+                <p className="text-xs text-foreground/40 truncate">{profile?.position || "Staff"}</p>
+              </div>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition-all"
+            >
+              <LogOut className="w-5 h-5" />
+              <span className="font-medium">Log Out</span>
+            </button>
+          </div>
         </aside>
 
-        {/* Mobile Tabs */}
-        <div className="lg:hidden flex border-b border-white/5 p-2 gap-2 overflow-x-auto">
-          {["classes", "students", "schedule", "idcard"].map(tab => (
+        {/* Main Content Area */}
+        <div className="flex-1 flex flex-col min-w-0">
+          {/* Top Header Bar */}
+          <header className="flex items-center justify-between p-4 md:p-6 border-b border-white/10 shrink-0">
             <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest ${
-                activeTab === tab ? "bg-primary text-background" : "bg-white/5 text-foreground/40"
-              }`}
+              onClick={() => setSidebarOpen(true)}
+              className="lg:hidden p-2 rounded-xl hover:bg-white/5 transition-colors"
             >
-              {tab}
+              <Menu className="w-6 h-6" />
             </button>
-          ))}
-        </div>
+            <div className="flex items-center gap-4">
+              <h2 className="text-xl font-bold hidden md:block">
+                {menuItems.find(item => item.id === activeTab)?.label}
+              </h2>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="relative hidden md:block">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/40" />
+                <input 
+                  type="text" 
+                  placeholder="Search..." 
+                  className="bg-white/5 border border-white/5 rounded-xl py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-primary/50 transition-all"
+                />
+              </div>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 p-2 rounded-xl hover:bg-white/5 transition-colors"
+              >
+                <LogOut className="w-5 h-5" />
+              </button>
+            </div>
+          </header>
 
         {/* Main Content */}
         <main className="flex-grow p-4 md:p-8 lg:p-12 overflow-y-auto">
@@ -242,6 +309,66 @@ const StaffDashboard = () => {
             </div>
           )}
 
+          {activeTab === "schedule" && (
+            <div className="space-y-8">
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold">Class Schedule</h2>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {[
+                  { 
+                    time: "Today, 4:00 PM", 
+                    course: "HTML & CSS in Igbo", 
+                    students: 42, 
+                    type: "Live Session" 
+                  },
+                  { 
+                    time: "Tomorrow, 10:00 AM", 
+                    course: "Python for Beginners", 
+                    students: 28, 
+                    type: "Tutorial" 
+                  },
+                  { 
+                    time: "Wednesday, 2:00 PM", 
+                    course: "JavaScript Fundamentals", 
+                    students: 35, 
+                    type: "Workshop" 
+                  },
+                  { 
+                    time: "Thursday, 6:00 PM", 
+                    course: "React Basics", 
+                    students: 22, 
+                    type: "Q&A Session" 
+                  }
+                ].map((item, i) => (
+                  <div 
+                    key={i} 
+                    className="p-6 rounded-3xl bg-slate-900 border border-white/5 hover:border-primary/20 transition-all"
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-widest text-foreground/40 mb-1">
+                          {item.time}
+                        </p>
+                        <h3 className="text-lg font-bold">{item.course}</h3>
+                      </div>
+                      <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider">
+                        {item.type}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-4 text-sm text-foreground/60">
+                      <div className="flex items-center gap-2">
+                        <Users className="w-4 h-4" />
+                        {item.students} Students
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {activeTab === "idcard" && (
             <div className="space-y-8">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -344,6 +471,7 @@ const StaffDashboard = () => {
             </div>
           )}
         </main>
+        </div>
       </div>
 
       <style jsx global>{`
