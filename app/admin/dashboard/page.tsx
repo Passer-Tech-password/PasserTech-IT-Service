@@ -426,14 +426,14 @@ const AdminDashboard = () => {
                 </div>
                 <div className="flex flex-col items-center justify-center py-12">
                   {/* Printable ID Card */}
-                  <div id="printable-admin-id-card" className="w-[360px] h-[580px] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-3 border-primary/30 rounded-[2.8rem] overflow-hidden relative shadow-2xl shadow-primary/20 flex flex-col items-center p-8 text-center print:shadow-none print:border-none">
+                  <div id="printable-admin-id-card" className="w-[360px] h-[560px] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-3 border-primary/30 rounded-[2.8rem] overflow-hidden relative shadow-2xl shadow-primary/20 flex flex-col items-center p-6 text-center print:shadow-none print:border-none">
                     {/* Decorative Background Elements */}
                     <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-br from-primary/30 via-primary/10 to-transparent -skew-y-12 origin-top-left" />
                     <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full -mr-32 -mt-32 blur-3xl" />
                     <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary/10 rounded-full -ml-24 -mb-24 blur-3xl" />
                     
                     {/* Company Logo Header */}
-                    <div className="relative z-40 w-full flex items-center justify-center mb-8 mt-2">
+                    <div className="relative z-40 w-full flex items-center justify-center mb-6 mt-0">
                       <div className="flex items-center gap-4 bg-slate-900/80 backdrop-blur-sm px-6 py-3 rounded-3xl border border-white/10">
                         <div className="relative w-12 h-12 overflow-hidden rounded-xl border-2 border-primary/30">
                           <img 
@@ -452,14 +452,14 @@ const AdminDashboard = () => {
                     </div>
 
                     {/* Photo Section */}
-                    <div className="relative z-40 w-36 h-36 rounded-[2rem] border-4 border-primary/50 p-2 mb-8 bg-gradient-to-br from-slate-800 to-slate-900 shadow-lg shadow-primary/10">
+                    <div className="relative z-40 w-36 h-36 rounded-[2rem] border-4 border-primary/50 p-2 mb-6 bg-gradient-to-br from-slate-800 to-slate-900 shadow-lg shadow-primary/10">
                       <div className="w-full h-full rounded-2xl bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center overflow-hidden border border-white/5">
                         <User className="w-16 h-16 text-primary/30" />
                       </div>
                     </div>
 
                     {/* Name and Position */}
-                    <div className="relative z-40 space-y-2 mb-10 px-4">
+                    <div className="relative z-40 space-y-2 mb-6 px-4">
                       <h2 className="text-2xl font-black text-white uppercase tracking-tighter leading-tight">
                         {adminData?.fullName || "PasserTech Admin"}
                       </h2>
@@ -468,18 +468,11 @@ const AdminDashboard = () => {
                       </p>
                     </div>
 
-                    {/* EXECUTIVE BOARD - Highlighted */}
-                    <div className="relative z-40 mb-8">
-                      <div className="bg-gradient-to-r from-primary via-green-400 to-primary bg-clip-text text-transparent animate-pulse">
-                        <span className="text-sm font-black uppercase tracking-[0.4em] drop-shadow-lg">EXECUTIVE BOARD</span>
-                      </div>
-                    </div>
-
                     {/* Details Grid */}
-                    <div className="relative z-30 w-full space-y-8 border-t-3 border-primary/30 pt-8 mt-auto">
-                      <div className="grid grid-cols-1 gap-6">
+                    <div className="relative z-40 w-full space-y-5 pt-0 mb-6">
+                      <div className="grid grid-cols-1 gap-5">
                         {/* ID Number */}
-                        <div className="space-y-3">
+                        <div className="space-y-2">
                           <p className="text-[11px] text-white/70 font-black uppercase tracking-[0.3em]">ID NUMBER</p>
                           <p className="text-2xl font-black font-mono text-white bg-gradient-to-r from-slate-800 to-slate-700 px-6 py-4 rounded-2xl border-2 border-primary/30 shadow-xl shadow-primary/20">
                             EXEC-{profile?.uid?.substring(0, 8).toUpperCase() || "ADMIN001"}
@@ -487,12 +480,19 @@ const AdminDashboard = () => {
                         </div>
                         
                         {/* Access Level */}
-                        <div className="space-y-3">
+                        <div className="space-y-2">
                           <p className="text-[11px] text-white/70 font-black uppercase tracking-[0.3em]">ACCESS LEVEL</p>
                           <p className="text-2xl font-black text-primary bg-gradient-to-r from-primary/30 to-primary/10 px-6 py-4 rounded-2xl border-2 border-primary/50 shadow-xl shadow-primary/30">
                             FULL ACCESS • LEVEL 0
                           </p>
                         </div>
+                      </div>
+                    </div>
+
+                    {/* EXECUTIVE BOARD - Highlighted */}
+                    <div className="relative z-40 mt-auto">
+                      <div className="bg-gradient-to-r from-primary via-green-400 to-primary bg-clip-text text-transparent animate-pulse">
+                        <span className="text-sm font-black uppercase tracking-[0.4em] drop-shadow-lg">EXECUTIVE BOARD</span>
                       </div>
                     </div>
 
