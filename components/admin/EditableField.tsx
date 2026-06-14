@@ -23,7 +23,11 @@ const EditableField: React.FC<EditableFieldProps> = ({
   initialValues,
   onSave 
 }) => {
-  const [values, setValues] = useState(initialValues);
+  // Initialize with default values for all languages
+  const [values, setValues] = useState(() => {
+    const defaults: Record<SupportedLanguage, string> = { en: "", ig: "", ha: "", yo: "", pcm: "" };
+    return { ...defaults, ...initialValues };
+  });
   const [loading, setLoading] = useState(false);
   const [activeLang, setActiveLang] = useState<SupportedLanguage>("en");
 

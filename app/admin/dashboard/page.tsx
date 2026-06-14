@@ -165,8 +165,12 @@ const AdminDashboard = () => {
         `}>
           <div className="p-6 border-b border-white/10 shrink-0">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
-                <span className="font-bold text-lg text-background">P</span>
+              <div className="relative w-10 h-10 overflow-hidden rounded-xl">
+                <img 
+                  src="/logo.png" 
+                  alt="PasserTech"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div>
                 <h1 className="font-bold text-lg">Passer<span className="text-primary">Tech</span></h1>
@@ -422,45 +426,81 @@ const AdminDashboard = () => {
                 </div>
                 <div className="flex flex-col items-center justify-center py-12">
                   {/* Printable ID Card */}
-                  <div id="printable-admin-id-card" className="w-[350px] h-[500px] bg-slate-900 border-2 border-primary rounded-[2.5rem] overflow-hidden relative shadow-2xl flex flex-col items-center p-8 text-center print:shadow-none print:border-none">
-                    <div className="absolute top-0 left-0 w-full h-40 bg-primary/20 -skew-y-6 origin-top-left" />
-                    <div className="absolute top-0 right-0 w-40 h-40 bg-primary/10 rounded-full -mr-20 -mt-20 blur-3xl" />
-                    <div className="relative z-10 mb-8 mt-4">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                          <span className="text-background font-bold text-lg">P</span>
+                  <div id="printable-admin-id-card" className="w-[360px] h-[520px] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-3 border-primary/30 rounded-[2.8rem] overflow-hidden relative shadow-2xl shadow-primary/20 flex flex-col items-center p-8 text-center print:shadow-none print:border-none">
+                    {/* Decorative Background Elements */}
+                    <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-br from-primary/30 via-primary/10 to-transparent -skew-y-12 origin-top-left" />
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full -mr-32 -mt-32 blur-3xl" />
+                    <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary/10 rounded-full -ml-24 -mb-24 blur-3xl" />
+                    
+                    {/* Company Logo Header */}
+                    <div className="relative z-10 w-full flex items-center justify-center mb-8 mt-2">
+                      <div className="flex items-center gap-4 bg-slate-900/80 backdrop-blur-sm px-6 py-3 rounded-3xl border border-white/10">
+                        <div className="relative w-12 h-12 overflow-hidden rounded-xl border-2 border-primary/30">
+                          <img 
+                            src="/logo.png" 
+                            alt="PasserTech"
+                            className="w-full h-full object-cover"
+                          />
                         </div>
-                        <span className="text-xl font-bold tracking-tight text-white">
-                          Passer<span className="text-primary">Tech</span>
-                        </span>
+                        <div className="text-left">
+                          <h1 className="text-xl font-extrabold tracking-tight text-white">
+                            Passer<span className="text-primary">Tech</span>
+                          </h1>
+                          <p className="text-[10px] text-foreground/50 font-medium tracking-wider uppercase">Official Executive ID</p>
+                        </div>
                       </div>
                     </div>
-                    <div className="relative z-10 w-32 h-32 rounded-3xl border-4 border-primary p-1 mb-6 bg-slate-800">
-                      <div className="w-full h-full rounded-2xl bg-slate-700 flex items-center justify-center overflow-hidden">
-                        <User className="w-12 h-12 text-primary/40" />
+
+                    {/* Photo Section */}
+                    <div className="relative z-10 w-36 h-36 rounded-[2rem] border-4 border-primary/50 p-2 mb-8 bg-gradient-to-br from-slate-800 to-slate-900 shadow-lg shadow-primary/10">
+                      <div className="w-full h-full rounded-2xl bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center overflow-hidden border border-white/5">
+                        <User className="w-16 h-16 text-primary/30" />
                       </div>
                     </div>
-                    <div className="relative z-10 space-y-1 mb-8">
-                      <h2 className="text-2xl font-bold text-white uppercase tracking-tight">{adminData?.fullName || "PasserTech Admin"}</h2>
-                      <p className="text-primary font-bold uppercase tracking-widest text-sm">{adminData?.position || "CTO & CEO"}</p>
+
+                    {/* Name and Position */}
+                    <div className="relative z-10 space-y-2 mb-10 px-4">
+                      <h2 className="text-2xl font-black text-white uppercase tracking-tighter leading-tight">
+                        {adminData?.fullName || "PasserTech Admin"}
+                      </h2>
+                      <p className="text-primary font-bold uppercase tracking-[0.25em] text-[11px] bg-primary/10 px-3 py-1 rounded-full inline-block border border-primary/20">
+                        {adminData?.position || "CTO & CEO"}
+                      </p>
                     </div>
-                    <div className="relative z-10 w-full grid grid-cols-1 gap-4 text-left border-t border-white/10 pt-8 mb-8">
-                      <div>
-                        <p className="text-[10px] text-foreground/40 font-bold uppercase tracking-widest mb-1">Executive ID</p>
-                        <p className="text-sm font-mono text-white">EXEC-{profile?.uid?.substring(0, 8).toUpperCase() || "ADMIN001"}</p>
-                      </div>
-                      <div>
-                        <p className="text-[10px] text-foreground/40 font-bold uppercase tracking-widest mb-1">Access Level</p>
-                        <p className="text-sm font-bold text-primary">FULL ACCESS - LEVEL 0</p>
-                      </div>
-                    </div>
-                    <div className="relative z-10 mt-auto">
-                      <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-primary text-background">
-                        <span className="text-xs font-extrabold uppercase tracking-widest">Executive Board</span>
+
+                    {/* EXECUTIVE BOARD - Highlighted */}
+                    <div className="relative z-10 mb-8">
+                      <div className="bg-gradient-to-r from-primary via-green-400 to-primary bg-clip-text text-transparent animate-pulse">
+                        <span className="text-sm font-black uppercase tracking-[0.4em] drop-shadow-lg">EXECUTIVE BOARD</span>
                       </div>
                     </div>
-                    <div className="absolute top-4 right-4 w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center border border-primary/40 rotate-12">
-                      <ShieldCheck className="w-6 h-6 text-primary" />
+
+                    {/* Details Grid */}
+                    <div className="relative z-10 w-full space-y-6 border-t-2 border-primary/20 pt-8">
+                      <div className="grid grid-cols-2 gap-4 text-center">
+                        <div className="space-y-1">
+                          <p className="text-[9px] text-foreground/40 font-extrabold uppercase tracking-[0.3em] mb-1">ID Number</p>
+                          <p className="text-sm font-mono font-bold text-white bg-slate-800/60 px-3 py-2 rounded-xl border border-white/5">
+                            EXEC-{profile?.uid?.substring(0, 8).toUpperCase() || "ADMIN001"}
+                          </p>
+                        </div>
+                        <div className="space-y-1">
+                          <p className="text-[9px] text-foreground/40 font-extrabold uppercase tracking-[0.3em] mb-1">Access Level</p>
+                          <p className="text-sm font-black text-primary bg-primary/10 px-3 py-2 rounded-xl border border-primary/30">
+                            LEVEL 0
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-[10px] text-foreground/50 font-medium">Full Administrative Access</p>
+                      </div>
+                    </div>
+
+                    {/* Hologram/Verification Badge */}
+                    <div className="absolute top-4 right-4 z-20">
+                      <div className="w-12 h-12 bg-gradient-to-br from-primary/40 to-transparent rounded-full flex items-center justify-center border border-primary/50 rotate-12 backdrop-blur-sm">
+                        <ShieldCheck className="w-7 h-7 text-primary/90" />
+                      </div>
                     </div>
                   </div>
                   <div className="mt-12 max-w-md text-center">
@@ -472,7 +512,40 @@ const AdminDashboard = () => {
               </div>
             )}
 
-            {activeTab === "content" && <div className="p-6"><h2 className="text-2xl font-bold mb-4">Manage Content</h2><EditableField label="Test" section="hero" field="title" /></div>}
+            {activeTab === "content" && (
+              <div className="space-y-8">
+                <div>
+                  <h1 className="text-3xl font-extrabold mb-2">Manage Site Content</h1>
+                  <p className="text-foreground/60">Edit content for all sections of the PasserTech website.</p>
+                </div>
+                
+                <div className="space-y-8">
+                  {/* Hero Section */}
+                  <div className="bg-slate-900 border border-white/5 rounded-3xl p-8">
+                    <h3 className="text-xl font-bold mb-6">Hero Section</h3>
+                    <div className="space-y-6">
+                      <EditableField
+                        label="Hero Title"
+                        section="hero"
+                        field="title"
+                        initialValues={content?.hero?.title || { en: "", ig: "", ha: "", yo: "", pcm: "" }}
+                      />
+                      <EditableField
+                        label="Hero Subtitle"
+                        section="hero"
+                        field="subtitle"
+                        initialValues={content?.hero?.subtitle || { en: "", ig: "", ha: "", yo: "", pcm: "" }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Placeholder sections for future use */}
+                  <div className="bg-slate-900 border border-white/5 rounded-3xl p-8">
+                    <h3 className="text-xl font-bold mb-4 text-foreground/40">More sections coming soon</h3>
+                  </div>
+                </div>
+              </div>
+            )}
             {activeTab === "courses" && <CourseManagement />}
             {activeTab === "services" && <ServiceManagement />}
             {activeTab === "projects" && <ProjectManagement />}
@@ -490,23 +563,21 @@ const AdminDashboard = () => {
             visibility: hidden;
           }
           #printable-admin-id-card, #printable-admin-id-card * {
-            visibility: visible;
+            visibility: visible !important;
           }
           #printable-admin-id-card {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            border: 2px solid #22c55e !important;
-            background-color: #0f172a !important;
-            -webkit-print-color-adjust: exact;
+            position: absolute !important;
+            left: 50% !important;
+            top: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
           }
-          .bg-slate-900 { background-color: #0f172a !important; }
-          .bg-primary { background-color: #22c55e !important; }
-          .text-primary { color: #22c55e !important; }
-          .text-white { color: #ffffff !important; }
-          .bg-primary\/10 { background-color: rgba(34, 197, 94, 0.1) !important; }
-          .bg-primary\/20 { background-color: rgba(34, 197, 94, 0.2) !important; }
+          /* Ensure gradients and backgrounds print */
+          .bg-gradient-to-br {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
         }
       `}</style>
     </ProtectedRoute>
