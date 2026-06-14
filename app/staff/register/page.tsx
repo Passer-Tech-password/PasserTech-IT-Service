@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, setDoc, serverTimestamp, collection, getDocs } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import { UserPlus, Mail, Lock, Phone, User, Briefcase, Loader2 } from "lucide-react";
@@ -49,9 +49,40 @@ const StaffRegister = () => {
     role: "staff",
     password: "",
   });
+  const [availablePositions, setAvailablePositions] = useState<string[]>(JOB_POSITIONS);
   const [loading, setLoading] = useState(false);
+  const [fetchingPositions, setFetchingPositions] = useState(true);
   const [error, setError] = useState("");
   const router = useRouter();
+
+  // Fetch existing positions to filter out taken ones
+  useEffect(() => {
+    const fetchTakenPositions = async () => {
+      try {
+        const usersSnapshot = await getDocs(collection(db, "users"));
+        const takenPositions: string[] = [];
+        
+        usersSnapshot.forEach((doc) => {
+          const userData = doc.data();
+          if (userData.position) {
+            takenPositions.push(userData.position);
+          }
+        });
+
+        // Filter out taken positions from predefined list
+        const filtered = JOB_POSITIONS.filter(pos => !takenPositions.includes(pos));
+        setAvailablePositions(filtered);
+      } catch (err) {
+        console.error("Error fetching positions:", err);
+        // If error, show all positions
+        setAvailablePositions(JOB_POSITIONS);
+      } finally {
+        setFetchingPositions(false);
+      }
+    };
+
+    fetchTakenPositions();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,6 +127,17 @@ const StaffRegister = () => {
       setLoading(false);
     }
   };
+
+  if (fetchingPositions) {
+    return (
+      <div className="min-h-screen pt-32 pb-20 bg-african-pattern flex items-center justify-center px-4">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="w-12 h-12 animate-spin text-primary" />
+          <p className="text-foreground/70 text-lg">Loading available positions...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pt-32 pb-20 bg-african-pattern flex items-center justify-center px-4">
@@ -177,7 +219,7 @@ const StaffRegister = () => {
                   onChange={(e) => setFormData({ ...formData, position: e.target.value })}
                 >
                   <option value="">Select your role</option>
-                  {JOB_POSITIONS.map((pos, idx) => (
+                  {availablePositions.map((pos, idx) => (
                     <option key={idx} value={pos}>{pos}</option>
                   ))}
                 </select>
