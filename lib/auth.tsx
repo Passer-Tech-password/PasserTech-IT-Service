@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import { auth, db } from "./firebase";
 import { useRouter } from "next/navigation";
 
@@ -40,100 +40,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  // Load cached profile from localStorage on mount
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const cachedProfile = localStorage.getItem("passertech_user_profile");
-      if (cachedProfile) {
-        try {
-          setProfile(JSON.parse(cachedProfile));
-        } catch (e) {
-          console.error("Failed to parse cached profile:", e);
-        }
-      }
-    }
-  }, []);
+    let unsubscribeUser: (() => void) | null = null;
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
       setUser(user);
+      
+      // Unsubscribe from previous user's profile listener if any
+      if (unsubscribeUser) {
+        unsubscribeUser();
+        unsubscribeUser = null;
+      }
+
       if (user) {
-        try {
-          const docRef = doc(db, "users", user.uid);
-          const docSnap = await getDoc(docRef);
+        const docRef = doc(db, "users", user.uid);
+        unsubscribeUser = onSnapshot(docRef, (docSnap) => {
           let userProfile: UserProfile;
           if (docSnap.exists()) {
             userProfile = docSnap.data() as UserProfile;
           } else {
-            // Check if we have a cached profile first, otherwise default to student
-            const cachedProfile = localStorage.getItem("passertech_user_profile");
-            if (cachedProfile) {
-              try {
-                const parsed = JSON.parse(cachedProfile);
-                if (parsed.uid === user.uid) {
-                  userProfile = parsed;
-                } else {
-                  userProfile = {
-                    uid: user.uid,
-                    email: user.email,
-                    displayName: user.displayName,
-                    role: "student",
-                    isApproved: true,
-                  };
-                }
-              } catch {
-                userProfile = {
-                  uid: user.uid,
-                  email: user.email,
-                  displayName: user.displayName,
-                  role: "student",
-                  isApproved: true,
-                };
-              }
-            } else {
-              userProfile = {
-                uid: user.uid,
-                email: user.email,
-                displayName: user.displayName,
-                role: "student",
-                isApproved: true,
-              };
-            }
-          }
-          setProfile(userProfile);
-          // Cache the profile in localStorage
-          if (typeof window !== "undefined") {
-            localStorage.setItem("passertech_user_profile", JSON.stringify(userProfile));
-          }
-        } catch (error) {
-          console.log("Error fetching user profile, using cached profile if available:", error);
-          // If Firestore fails, use cached profile or default
-          const cachedProfile = localStorage.getItem("passertech_user_profile");
-          let userProfile: UserProfile;
-          if (cachedProfile) {
-            try {
-              const parsed = JSON.parse(cachedProfile);
-              if (parsed.uid === user.uid) {
-                userProfile = parsed;
-              } else {
-                userProfile = {
-                  uid: user.uid,
-                  email: user.email,
-                  displayName: user.displayName,
-                  role: "student",
-                  isApproved: true,
-                };
-              }
-            } catch {
-              userProfile = {
-                uid: user.uid,
-                email: user.email,
-                displayName: user.displayName,
-                role: "student",
-                isApproved: true,
-              };
-            }
-          } else {
+            // Default to student profile if not found in Firestore
             userProfile = {
               uid: user.uid,
               email: user.email,
@@ -143,18 +69,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             };
           }
           setProfile(userProfile);
-        }
+          setLoading(false);
+        }, (error) => {
+          console.error("Error listening to user profile:", error);
+          // Default to student profile if Firestore fails
+          setProfile({
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName,
+            role: "student",
+            isApproved: true,
+          });
+          setLoading(false);
+        });
       } else {
         setProfile(null);
-        // Clear cached profile on logout
-        if (typeof window !== "undefined") {
-          localStorage.removeItem("passertech_user_profile");
-        }
+        setLoading(false);
       }
-      setLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribeAuth();
+      if (unsubscribeUser) {
+        unsubscribeUser();
+      }
+    };
   }, []);
 
   const logout = async () => {
