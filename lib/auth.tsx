@@ -44,6 +44,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     let unsubscribeUser: (() => void) | null = null;
 
     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+      console.log("[Auth] Auth state changed:", user?.uid);
       setUser(user);
       
       // Unsubscribe from previous user's profile listener if any
@@ -53,11 +54,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       if (user) {
+        console.log("[Auth] Fetching profile for user:", user.uid);
         const docRef = doc(db, "users", user.uid);
         unsubscribeUser = onSnapshot(docRef, (docSnap) => {
           let userProfile: UserProfile;
           if (docSnap.exists()) {
             userProfile = docSnap.data() as UserProfile;
+            console.log("[Auth] Got profile from Firestore:", userProfile);
           } else {
             // Default to student profile if not found in Firestore
             userProfile = {
@@ -67,11 +70,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               role: "student",
               isApproved: true,
             };
+            console.log("[Auth] No profile found, using default:", userProfile);
           }
           setProfile(userProfile);
           setLoading(false);
         }, (error) => {
-          console.error("Error listening to user profile:", error);
+          console.error("[Auth] Error listening to user profile:", error);
           // Default to student profile if Firestore fails
           setProfile({
             uid: user.uid,
@@ -83,6 +87,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setLoading(false);
         });
       } else {
+        console.log("[Auth] User logged out");
         setProfile(null);
         setLoading(false);
       }

@@ -22,9 +22,15 @@ const StaffLogin = () => {
   useEffect(() => {
     if (!authLoadingState) {
       if (profile?.role === "staff" && profile?.isApproved) {
-        router.push("/staff/dashboard");
+        router.replace("/staff/dashboard");
       } else if (profile?.role === "admin") {
-        router.push("/admin/dashboard");
+        router.replace("/admin/dashboard");
+      } else if (profile && profile?.role === "staff" && !profile?.isApproved) {
+        // If staff but not approved, redirect to pending
+        router.replace("/staff/pending");
+      } else if (profile) {
+        // If logged in but not staff/admin, show error
+        setError("You do not have permission to access this area.");
       }
       setAuthLoading(false);
       // Stop the login button spinner after auth state is known
@@ -43,6 +49,7 @@ const StaffLogin = () => {
         setLoading(false);
       }, 5000); // 5 second fallback
     } catch (err: any) {
+      console.error("Login error:", err);
       setError(err.message || "Invalid email or password.");
       setLoading(false);
     }

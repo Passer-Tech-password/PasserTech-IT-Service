@@ -22,9 +22,12 @@ const AdminLogin = () => {
   useEffect(() => {
     if (!authLoadingState) {
       if (profile?.role === "admin" && profile?.isApproved) {
-        router.push("/admin/dashboard");
+        router.replace("/admin/dashboard");
       } else if (profile?.role === "staff" && profile?.isApproved) {
-        router.push("/staff/dashboard");
+        router.replace("/staff/dashboard");
+      } else if (profile) {
+        // If logged in but not admin (and not approved staff), show error
+        setError("You do not have permission to access this area.");
       }
       setAuthLoading(false);
       // Stop the login button spinner after auth state is known
@@ -43,6 +46,7 @@ const AdminLogin = () => {
         setLoading(false);
       }, 5000); // 5 second fallback
     } catch (err: any) {
+      console.error("Admin login error:", err);
       setError("Invalid admin credentials. Please check your email and password.");
       setLoading(false);
     }
