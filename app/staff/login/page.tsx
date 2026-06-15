@@ -27,6 +27,8 @@ const StaffLogin = () => {
         router.push("/admin/dashboard");
       }
       setAuthLoading(false);
+      // Stop the login button spinner after auth state is known
+      setLoading(false);
     }
   }, [profile, authLoadingState, router]);
 
@@ -36,7 +38,10 @@ const StaffLogin = () => {
     setError("");
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      // Redirect handled by useEffect
+      // Wait a bit for auth state to update, then if still loading, stop it as a fallback
+      setTimeout(() => {
+        setLoading(false);
+      }, 5000); // 5 second fallback
     } catch (err: any) {
       setError(err.message || "Invalid email or password.");
       setLoading(false);
