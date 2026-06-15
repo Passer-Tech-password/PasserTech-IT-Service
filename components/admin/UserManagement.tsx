@@ -14,7 +14,8 @@ import {
   Search,
   Mail,
   Phone,
-  Briefcase
+  Briefcase,
+  Contact2
 } from "lucide-react";
 import { 
   collection, 
@@ -135,7 +136,8 @@ const UserManagement = () => {
             </div>
           ) : (
             <div className="bg-slate-900 border border-white/5 rounded-3xl overflow-hidden">
-              <div className="overflow-x-auto">
+              {/* Desktop Table */}
+              <div className="hidden md:block overflow-x-auto">
                 <table className="w-full text-left">
                   <thead>
                     <tr className="border-b border-white/5 bg-white/[0.02]">
@@ -232,6 +234,90 @@ const UserManagement = () => {
                     ))}
                   </tbody>
                 </table>
+              </div>
+
+              {/* Mobile Cards */}
+              <div className="md:hidden divide-y divide-white/5">
+                {filteredUsers.map((user) => (
+                  <div key={user.id} className="p-6 hover:bg-white/[0.01] transition-colors">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
+                          {user.fullName?.charAt(0) || user.email?.charAt(0)}
+                        </div>
+                        <div>
+                          <p className="font-bold">{user.fullName || "Unnamed User"}</p>
+                          <p className="text-xs text-foreground/40">{user.email}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="space-y-3 mb-4">
+                      <div className="flex items-center gap-2">
+                        {user.role === "admin" ? (
+                          <ShieldCheck className="w-4 h-4 text-primary" />
+                        ) : user.role === "staff" ? (
+                          <Briefcase className="w-4 h-4 text-accent" />
+                        ) : (
+                          <Users className="w-4 h-4 text-blue-500" />
+                        )}
+                        <div className="flex flex-col">
+                          <span className="text-xs font-bold capitalize">{user.role}</span>
+                          {user.position && <span className="text-[10px] text-foreground/40">{user.position}</span>}
+                        </div>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {user.role !== "student" && (
+                          <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${
+                            user.isApproved ? "bg-primary/10 text-primary" : "bg-accent/10 text-accent"
+                          }`}>
+                            {user.isApproved ? "Approved" : "Pending"}
+                          </span>
+                        )}
+                        {user.idCardRequested && (
+                          <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${
+                            user.idCardStatus === "approved" ? "bg-blue-500/10 text-blue-500" : "bg-orange-500/10 text-orange-500"
+                          }`}>
+                            ID: {user.idCardStatus || "pending"}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex justify-end gap-2">
+                      {!user.isApproved && user.role !== "student" && (
+                        <button 
+                          onClick={() => handleApprove(user.id)}
+                          className="p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-background transition-all"
+                          title="Approve Staff"
+                        >
+                          <CheckCircle className="w-4 h-4" />
+                        </button>
+                      )}
+                      {user.idCardRequested && user.idCardStatus !== "approved" && (
+                        <button 
+                          onClick={() => handleApproveID(user.id)}
+                          className="p-2 rounded-lg bg-blue-500/10 text-blue-500 hover:bg-blue-500 hover:text-white transition-all"
+                          title="Approve ID Card"
+                        >
+                          <Contact2 className="w-4 h-4" />
+                        </button>
+                      )}
+                      <button 
+                        onClick={() => handleToggleRole(user.id, user.role)}
+                        className="p-2 rounded-lg bg-white/5 text-foreground/40 hover:text-foreground transition-all"
+                        title="Change Role"
+                      >
+                        <Shield className="w-4 h-4" />
+                      </button>
+                      <button 
+                        onClick={() => handleDelete(user.id)}
+                        className="p-2 rounded-lg bg-white/5 text-foreground/40 hover:text-red-500 transition-all"
+                        title="Delete User"
+                      >
+                        <UserX className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}

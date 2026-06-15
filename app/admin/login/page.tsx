@@ -1,19 +1,34 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import { Mail, Lock, LogIn, Loader2, Shield } from "lucide-react";
 import Link from "next/link";
+import { useAuth } from "@/lib/auth";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
   const [error, setError] = useState("");
   const router = useRouter();
+  const { profile, loading: authLoadingState } = useAuth();
+
+  // Check if already logged in and redirect
+  useEffect(() => {
+    if (!authLoadingState) {
+      if (profile?.role === "admin" && profile?.isApproved) {
+        router.push("/admin/dashboard");
+      } else if (profile?.role === "staff" && profile?.isApproved) {
+        router.push("/staff/dashboard");
+      }
+      setAuthLoading(false);
+    }
+  }, [profile, authLoadingState, router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,16 +36,23 @@ const AdminLogin = () => {
     setError("");
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.push("/admin/dashboard");
+      // Redirect handled by useEffect
     } catch (err: any) {
       setError("Invalid admin credentials. Please check your email and password.");
-    } finally {
       setLoading(false);
     }
   };
 
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-950">
+        <Loader2 className="w-12 h-12 animate-spin text-primary" />
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center px-4 py-12">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -90,11 +112,13 @@ const AdminLogin = () => {
           </button>
         </form>
 
-        <p className="text-center mt-8 text-foreground/50 text-sm">
-          <Link href="/" className="text-primary font-bold hover:underline">
-            ← Back to Home
-          </Link>
-        </p>
+        <div className="mt-8 text-center">
+          <p className="text-foreground/50 text-sm">
+            <Link href="/" className="text-foreground/40 hover:text-foreground/60">
+              ← Back to Home
+            </Link>
+          </p>
+        </div>
       </motion.div>
     </div>
   );

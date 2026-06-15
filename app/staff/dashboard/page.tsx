@@ -391,20 +391,22 @@ const StaffDashboard = () => {
 
             {activeTab === "students" && (
               <div className="space-y-8">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <h2 className="text-2xl font-bold">Student List</h2>
-                  <div className="relative hidden sm:block">
+                  <div className="relative">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/40" />
                     <input 
                       type="text" 
                       placeholder="Search students..." 
-                      className="bg-white/5 border border-white/5 rounded-xl py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-primary/50 transition-all"
+                      className="w-full sm:w-auto bg-white/5 border border-white/5 rounded-xl py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-primary/50 transition-all"
                     />
                   </div>
                 </div>
 
+                {/* Mobile: Card view, Desktop: Table view */}
                 <div className="bg-slate-900 border border-white/5 rounded-3xl overflow-hidden">
-                  <div className="overflow-x-auto">
+                  {/* Desktop Table */}
+                  <div className="hidden md:block overflow-x-auto">
                     <table className="w-full text-left">
                       <thead>
                         <tr className="border-b border-white/5">
@@ -444,6 +446,42 @@ const StaffDashboard = () => {
                         ))}
                       </tbody>
                     </table>
+                  </div>
+
+                  {/* Mobile Cards */}
+                  <div className="md:hidden divide-y divide-white/5">
+                    {students.map((student, i) => (
+                      <div key={student.id} className="p-6 hover:bg-white/[0.02] transition-colors">
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-xs font-bold uppercase text-primary">
+                              {student.name.charAt(0)}
+                            </div>
+                            <span className="font-bold">{student.name}</span>
+                          </div>
+                          <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${
+                            student.status === "Active" ? "bg-primary/10 text-primary" : "bg-red-500/10 text-red-500"
+                          }`}>
+                            {student.status}
+                          </span>
+                        </div>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <span className="text-foreground/60">Course</span>
+                            <span>{student.course}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-foreground/60">Attendance</span>
+                            <span className="font-medium">{student.attendance}</span>
+                          </div>
+                        </div>
+                        <div className="mt-4 flex justify-end">
+                          <button className="p-2 rounded-xl hover:bg-white/5 transition-colors text-foreground/20 hover:text-foreground">
+                            <ChevronRight className="w-5 h-5" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
