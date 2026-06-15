@@ -42,6 +42,7 @@ import ServiceManagement from "@/components/admin/ServiceManagement";
 import ProjectManagement from "@/components/admin/ProjectManagement";
 import TestimonialManagement from "@/components/admin/TestimonialManagement";
 import MessageManagement from "@/components/admin/MessageManagement";
+import { ExecutiveIDCard } from "@/components/id-cards";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -437,83 +438,20 @@ const AdminDashboard = () => {
                   </div>
                 </div>
                 <div className="flex flex-col items-center justify-center py-12">
-                  {/* Printable ID Card */}
-                  <div id="printable-admin-id-card" className="w-[360px] h-[560px] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-3 border-primary/30 rounded-[2.8rem] overflow-hidden relative shadow-2xl shadow-primary/20 flex flex-col items-center p-6 text-center print:shadow-none print:border-none">
-                    {/* Decorative Background Elements */}
-                    <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-br from-primary/30 via-primary/10 to-transparent -skew-y-12 origin-top-left" />
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full -mr-32 -mt-32 blur-3xl" />
-                    <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary/10 rounded-full -ml-24 -mb-24 blur-3xl" />
-                    
-                    {/* Company Logo Header */}
-                    <div className="relative z-40 w-full flex items-center justify-center mb-6 mt-0">
-                      <div className="flex items-center gap-4 bg-slate-900/80 backdrop-blur-sm px-6 py-3 rounded-3xl border border-white/10">
-                        <div className="relative w-12 h-12 overflow-hidden rounded-xl border-2 border-primary/30">
-                          <img 
-                            src="/logo.png" 
-                            alt="PasserTech"
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        <div className="text-left">
-                          <h1 className="text-xl font-extrabold tracking-tight text-white">
-                            Passer<span className="text-primary">Tech</span>
-                          </h1>
-                          <p className="text-[10px] text-foreground/50 font-medium tracking-wider uppercase">Official Executive ID</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Photo Section */}
-                    <div className="relative z-40 w-36 h-36 rounded-[2rem] border-4 border-primary/50 p-2 mb-6 bg-gradient-to-br from-slate-800 to-slate-900 shadow-lg shadow-primary/10">
-                      <div className="w-full h-full rounded-2xl bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center overflow-hidden border border-white/5">
-                        <User className="w-16 h-16 text-primary/30" />
-                      </div>
-                    </div>
-
-                    {/* Name and Position */}
-                    <div className="relative z-40 space-y-2 mb-6 px-4">
-                      <h2 className="text-2xl font-black text-white uppercase tracking-tighter leading-tight">
-                        {adminData?.fullName || "PasserTech Admin"}
-                      </h2>
-                      <p className="text-primary font-bold uppercase tracking-[0.25em] text-[11px] bg-primary/10 px-3 py-1 rounded-full inline-block border border-primary/20">
-                        {adminData?.position || "CTO & CEO"}
-                      </p>
-                    </div>
-
-                    {/* Details Grid */}
-                    <div className="relative z-40 w-full space-y-5 pt-0 mb-6">
-                      <div className="grid grid-cols-1 gap-5">
-                        {/* ID Number */}
-                        <div className="space-y-2">
-                          <p className="text-[11px] text-white/70 font-black uppercase tracking-[0.3em]">ID NUMBER</p>
-                          <p className="text-2xl font-black font-mono text-white bg-gradient-to-r from-slate-800 to-slate-700 px-6 py-4 rounded-2xl border-2 border-primary/30 shadow-xl shadow-primary/20">
-                            EXEC-{profile?.uid?.substring(0, 8).toUpperCase() || "ADMIN001"}
-                          </p>
-                        </div>
-                        
-                        {/* Access Level */}
-                        <div className="space-y-2">
-                          <p className="text-[11px] text-white/70 font-black uppercase tracking-[0.3em]">ACCESS LEVEL</p>
-                          <p className="text-2xl font-black text-primary bg-gradient-to-r from-primary/30 to-primary/10 px-6 py-4 rounded-2xl border-2 border-primary/50 shadow-xl shadow-primary/30">
-                            FULL ACCESS • LEVEL 0
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* EXECUTIVE BOARD - Highlighted */}
-                    <div className="relative z-40 mt-auto">
-                      <div className="bg-gradient-to-r from-primary via-green-400 to-primary bg-clip-text text-transparent animate-pulse">
-                        <span className="text-sm font-black uppercase tracking-[0.4em] drop-shadow-lg">EXECUTIVE BOARD</span>
-                      </div>
-                    </div>
-
-                    {/* Hologram/Verification Badge */}
-                    <div className="absolute top-4 right-4 z-20">
-                      <div className="w-12 h-12 bg-gradient-to-br from-primary/40 to-transparent rounded-full flex items-center justify-center border border-primary/50 rotate-12 backdrop-blur-sm">
-                        <ShieldCheck className="w-7 h-7 text-primary/90" />
-                      </div>
-                    </div>
+                  <div id="printable-admin-id-card" className="print:w-full print:max-w-full">
+                    <ExecutiveIDCard 
+                      data={{
+                        fullName: adminData?.fullName || "PasserTech Admin",
+                        title: adminData?.position || "CTO & CEO",
+                        accessLevel: "LEVEL 0",
+                        executiveId: `EXEC-${profile?.uid?.substring(0, 8).toUpperCase() || "ADMIN001"}`,
+                        email: profile?.email || "admin@passertech.com",
+                        phone: adminData?.phone,
+                        issueDate: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+                        expiryDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+                        avatar: undefined,
+                      }}
+                    />
                   </div>
                   <div className="mt-12 max-w-md text-center">
                     <p className="text-foreground/40 text-sm leading-relaxed">
@@ -582,11 +520,9 @@ const AdminDashboard = () => {
             left: 50% !important;
             top: 50% !important;
             transform: translate(-50%, -50%) !important;
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-          }
-          /* Ensure gradients and backgrounds print */
-          .bg-gradient-to-br {
+            width: 100% !important;
+            max-width: none !important;
+            box-shadow: none !important;
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
           }

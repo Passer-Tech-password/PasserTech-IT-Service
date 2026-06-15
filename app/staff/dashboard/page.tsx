@@ -33,6 +33,7 @@ import {
 import { db } from "@/lib/firebase";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
+import { StaffIDCard } from "@/components/id-cards";
 
 const StaffDashboard = () => {
   const [activeTab, setActiveTab] = useState("classes");
@@ -667,69 +668,20 @@ const StaffDashboard = () => {
                 </div>
 
                 <div className="flex flex-col items-center justify-center py-12">
-                  {/* ID Card Preview */}
-                  <div id="printable-id-card" className="w-[350px] h-[500px] bg-slate-900 border-2 border-primary/30 rounded-[2.5rem] overflow-hidden relative shadow-2xl flex flex-col items-center p-8 text-center print:shadow-none print:border-primary">
-                    {/* Decorative Elements */}
-                    <div className="absolute top-0 left-0 w-full h-32 bg-primary/10 -skew-y-6 origin-top-left" />
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl" />
-                    
-                    {/* Logo */}
-                    <div className="relative z-10 mb-8 mt-4">
-                      <div className="flex items-center gap-3 bg-slate-900/80 backdrop-blur-sm px-6 py-3 rounded-3xl border border-white/10">
-                        <div className="relative w-10 h-10 overflow-hidden rounded-xl">
-                          <img 
-                            src="/logo.png" 
-                            alt="PasserTech"
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        <div className="text-left">
-                          <h1 className="text-lg font-bold tracking-tight text-white">
-                            Passer<span className="text-primary">Tech</span>
-                          </h1>
-                          <p className="text-xs text-foreground/40">Official Staff ID</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Photo Placeholder */}
-                    <div className="relative z-10 w-32 h-32 rounded-3xl border-4 border-primary/20 p-1 mb-6 bg-slate-800">
-                      <div className="w-full h-full rounded-2xl bg-slate-700 flex items-center justify-center overflow-hidden">
-                        <User className="w-12 h-12 text-foreground/20" />
-                      </div>
-                    </div>
-
-                    {/* Info */}
-                    <div className="relative z-10 space-y-1 mb-8">
-                      <h2 className="text-xl font-bold text-white uppercase tracking-tight">{profile?.displayName || "Staff Member"}</h2>
-                      <p className="text-primary font-bold uppercase tracking-widest text-xs">{profile?.position || "Staff"}</p>
-                    </div>
-
-                    {/* Details */}
-                    <div className="relative z-10 w-full grid grid-cols-1 gap-4 text-left border-t border-white/5 pt-8 mb-8">
-                      <div>
-                        <p className="text-[10px] text-foreground/40 font-bold uppercase tracking-widest mb-1">Employee ID</p>
-                        <p className="text-sm font-mono text-white">PT-{profile?.uid?.substring(0, 8).toUpperCase()}</p>
-                      </div>
-                      <div>
-                        <p className="text-[10px] text-foreground/40 font-bold uppercase tracking-widest mb-1">Email</p>
-                        <p className="text-sm font-medium text-white truncate w-full">{profile?.email}</p>
-                      </div>
-                    </div>
-
-                    {/* Footer */}
-                    <div className="relative z-10 mt-auto">
-                      <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20">
-                        <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                        <span className="text-[10px] font-bold text-primary uppercase tracking-widest">Official Staff</span>
-                      </div>
-                    </div>
-
-                    {/* Signature area */}
-                    <div className="absolute bottom-12 right-8 opacity-20">
-                      <div className="w-24 h-0.5 bg-white/50 mb-1" />
-                      <p className="text-[8px] text-white/50 text-right uppercase">Authorized Signature</p>
-                    </div>
+                  <div id="printable-id-card" className="print:w-full print:max-w-full">
+                    <StaffIDCard 
+                      data={{
+                        fullName: profile?.displayName || "Staff Member",
+                        position: profile?.position || "Staff",
+                        department: "Technology",
+                        employeeId: `PT-${profile?.uid?.substring(0, 8).toUpperCase() || "STAFF001"}`,
+                        email: profile?.email || "staff@passertech.com",
+                        phone: profile?.phone,
+                        issueDate: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+                        expiryDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+                        avatar: undefined,
+                      }}
+                    />
                   </div>
 
                   <div className="mt-12 max-w-md text-center">
@@ -750,22 +702,19 @@ const StaffDashboard = () => {
             visibility: hidden;
           }
           #printable-id-card, #printable-id-card * {
-            visibility: visible;
+            visibility: visible !important;
           }
           #printable-id-card {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            border: 2px solid #22c55e !important;
-            background-color: #0f172a !important;
+            position: absolute !important;
+            left: 50% !important;
+            top: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            width: 100% !important;
+            max-width: none !important;
+            box-shadow: none !important;
             -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
           }
-          .bg-slate-900 { background-color: #0f172a !important; }
-          .bg-primary { background-color: #22c55e !important; }
-          .text-primary { color: #22c55e !important; }
-          .text-white { color: #ffffff !important; }
-          .bg-primary/10 { background-color: rgba(34, 197, 94, 0.1) !important; }
         }
       `}</style>
     </ProtectedRoute>
