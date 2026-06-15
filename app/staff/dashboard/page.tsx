@@ -47,6 +47,18 @@ const StaffDashboard = () => {
   const router = useRouter();
   const [requestingID, setRequestingID] = useState(false);
 
+  // Prevent body scrolling when mobile sidebar is open
+  useEffect(() => {
+    if (sidebarOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [sidebarOpen]);
+
   // Load profile data
   useEffect(() => {
     if (profile?.uid) {

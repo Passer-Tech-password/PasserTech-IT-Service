@@ -56,6 +56,18 @@ const AdminDashboard = () => {
     phone: ""
   });
 
+  // Prevent body scrolling when mobile sidebar is open
+  useEffect(() => {
+    if (sidebarOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [sidebarOpen]);
+
   const [stats, setStats] = useState({
     students: 0,
     courses: 0,
