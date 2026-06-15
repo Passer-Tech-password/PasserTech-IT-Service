@@ -676,7 +676,6 @@ const StaffDashboard = () => {
                         department: "Technology",
                         employeeId: `PT-${profile?.uid?.substring(0, 8).toUpperCase() || "STAFF001"}`,
                         email: profile?.email || "staff@passertech.com",
-                        phone: profile?.phone,
                         issueDate: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
                         expiryDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
                         avatar: undefined,

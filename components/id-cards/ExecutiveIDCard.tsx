@@ -6,8 +6,6 @@ import { IDCard } from "./IDCard";
 import { 
   ShieldCheck, 
   User, 
-  Mail, 
-  Phone, 
   Calendar, 
   QrCode,
   Fingerprint,
@@ -22,8 +20,6 @@ interface ExecutiveIDCardProps {
     title: string;
     accessLevel: string;
     executiveId: string;
-    email: string;
-    phone?: string;
     issueDate: string;
     expiryDate: string;
     avatar?: string;
@@ -147,34 +143,6 @@ export const ExecutiveIDCard = ({ data }: ExecutiveIDCardProps) => {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-5">
-              <div className="w-11 h-11 rounded-xl bg-purple-500/10 flex items-center justify-center shrink-0">
-                <Mail className="w-6 h-6 text-purple-400" />
-              </div>
-              <div className="flex-1">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
-                  Email
-                </p>
-                <p className="text-sm font-medium text-white truncate">
-                  {data.email}
-                </p>
-              </div>
-            </div>
-            {data.phone && (
-              <div className="flex items-center gap-5">
-                <div className="w-11 h-11 rounded-xl bg-purple-500/10 flex items-center justify-center shrink-0">
-                  <Phone className="w-6 h-6 text-purple-400" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
-                    Phone
-                  </p>
-                  <p className="text-sm font-medium text-white">
-                    {data.phone}
-                  </p>
-                </div>
-              </div>
-            )}
             <div className="grid grid-cols-2 gap-5 pt-4 border-t border-slate-700/50">
               <div className="flex items-center gap-4">
                 <Calendar className="w-5 h-5 text-purple-400" />

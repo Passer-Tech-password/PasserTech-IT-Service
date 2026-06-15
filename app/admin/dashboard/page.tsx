@@ -445,8 +445,6 @@ const AdminDashboard = () => {
                         title: adminData?.position || "CTO & CEO",
                         accessLevel: "LEVEL 0",
                         executiveId: `EXEC-${profile?.uid?.substring(0, 8).toUpperCase() || "ADMIN001"}`,
-                        email: profile?.email || "admin@passertech.com",
-                        phone: adminData?.phone,
                         issueDate: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
                         expiryDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
                         avatar: undefined,

@@ -7,7 +7,6 @@ import {
   ShieldCheck, 
   User, 
   Mail, 
-  Phone, 
   Calendar, 
   QrCode,
   Fingerprint
@@ -20,7 +19,6 @@ interface StaffIDCardProps {
     department?: string;
     employeeId: string;
     email: string;
-    phone?: string;
     issueDate: string;
     expiryDate: string;
     avatar?: string;
@@ -123,21 +121,6 @@ export const StaffIDCard = ({ data }: StaffIDCardProps) => {
                 </p>
               </div>
             </div>
-            {data.phone && (
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center shrink-0">
-                  <Phone className="w-5 h-5 text-green-400" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                    Phone
-                  </p>
-                  <p className="text-sm font-medium text-white">
-                    {data.phone}
-                  </p>
-                </div>
-              </div>
-            )}
             <div className="grid grid-cols-2 gap-4 pt-2 border-t border-slate-700/50">
               <div className="flex items-center gap-3">
                 <Calendar className="w-4 h-4 text-green-400" />
