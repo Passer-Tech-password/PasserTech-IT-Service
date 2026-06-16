@@ -24,6 +24,8 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
+  manifest: "/manifest.json",
+  themeColor: "#00E676",
   openGraph: {
     type: "website",
     locale: "en_NG",

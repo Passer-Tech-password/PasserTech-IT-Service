@@ -6,12 +6,18 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { auth, db } from "./firebase";
 import { useRouter } from "next/navigation";
 
-export type UserRole = "admin" | "staff" | "student";
+export type UserRole = 
+  | "admin" 
+  | "instructor" 
+  | "course_manager" 
+  | "content_creator" 
+  | "student";
 
 interface UserProfile {
   uid: string;
   email: string | null;
   displayName: string | null;
+  fullName?: string;
   role: UserRole;
   isApproved: boolean;
   position?: string;
