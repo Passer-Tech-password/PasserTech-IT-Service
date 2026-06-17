@@ -11,6 +11,7 @@ export type UserRole =
   | "instructor" 
   | "course_manager" 
   | "content_creator" 
+  | "staff"  // For backwards compatibility
   | "student";
 
 interface UserProfile {
@@ -128,20 +129,25 @@ export const ProtectedRoute: React.FC<{
   const { profile, loading } = useAuth();
   const router = useRouter();
 
+  // Helper to check if a role is a staff-like role
+  const isStaffRole = (role: UserRole) => {
+    return ["instructor", "course_manager", "content_creator", "staff"].includes(role);
+  };
+
   useEffect(() => {
     if (!loading) {
       if (!profile) {
         // Redirect to appropriate login based on allowed roles
         if (allowedRoles?.includes("admin")) {
           router.push("/admin/login");
-        } else if (allowedRoles?.includes("staff")) {
+        } else if (allowedRoles?.some(role => isStaffRole(role))) {
           router.push("/staff/login");
         } else {
           router.push("/login");
         }
       } else if (allowedRoles && !allowedRoles.includes(profile.role)) {
         router.push("/");
-      } else if (profile.role === "staff" && !profile.isApproved) {
+      } else if (isStaffRole(profile.role) && !profile.isApproved) {
         router.push("/staff/pending");
       }
     }
