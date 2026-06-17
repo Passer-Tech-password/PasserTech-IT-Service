@@ -8,19 +8,15 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // Helper function to get user role with safe access
-    function userData() {
-      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
-    }
-
     function userExists() {
-      return exists(/databases/$(database)/documents/users/$(request.auth.uid));
+      return isAuthenticated() && exists(/databases/$(database)/documents/users/$(request.auth.uid));
     }
 
     // Helper function to check user role
     function getRole() {
       return userExists() ? 
-        (userData().role is string ? userData().role : 'student') : 
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role is string ? 
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role : 'student') : 
         'student';
     }
 
@@ -29,7 +25,13 @@ service cloud.firestore {
     }
 
     function isStaff() {
-      return isAuthenticated() && (getRole() == 'staff' || getRole() == 'admin');
+      return isAuthenticated() && (
+        getRole() == 'staff' || 
+        getRole() == 'admin' || 
+        getRole() == 'instructor' || 
+        getRole() == 'course_manager' || 
+        getRole() == 'content_creator'
+      );
     }
 
     function isOwner(userId) {
