@@ -25,3 +25,6 @@ yarn-error.log*
 # Trae AI
 .agents/
 skills-lock.json
+
+# TypeScript
+tsconfig.tsbuildinfo
