@@ -1,21 +1,19 @@
 "use client";
 
 import React, { useState } from "react";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { storage } from "@/lib/firebase";
-import { Loader2, Upload, CheckCircle, XCircle } from "lucide-react";
+import { Loader2, Upload, XCircle } from "lucide-react";
 
 interface ImageUploadProps {
   onUploadComplete: (url: string) => void;
-  path: string;
+  path?: string; // Kept for backward compatibility, now uses folder from Cloudinary
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({ onUploadComplete, path }) => {
-  const [progress, setProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
+  const [preview, setPreview] = useState<string | null>(null);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -25,36 +23,36 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onUploadComplete, path }) => 
       return;
     }
 
-    // Validate file size (e.g., 2MB)
-    if (file.size > 2 * 1024 * 1024) {
-      setError("File size should be less than 2MB.");
-      return;
-    }
-
     setError("");
     setUploading(true);
-    
-    const storageRef = ref(storage, `${path}/${Date.now()}_${file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
+    setPreview(null);
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const p = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setProgress(p);
-      },
-      (err) => {
-        console.error("Upload error:", err);
-        setError("Failed to upload image. Please check your permissions.");
-        setUploading(false);
-      },
-      async () => {
-        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-        onUploadComplete(downloadURL);
-        setUploading(false);
-        setProgress(0);
+    // Create a preview
+    const objectUrl = URL.createObjectURL(file);
+    setPreview(objectUrl);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", path || "passertech");
+
+      const res = await fetch("/api/cloudinary/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (!data.success) {
+        throw new Error(data.error || "Upload failed");
       }
-    );
+
+      onUploadComplete(data.result.secure_url);
+    } catch (err) {
+      console.error("[Cloudinary Upload Error]", err);
+      setError("Failed to upload file. Please try again.");
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
@@ -75,7 +73,12 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onUploadComplete, path }) => 
           {uploading ? (
             <div className="text-center space-y-3">
               <Loader2 className="w-8 h-8 text-primary animate-spin mx-auto" />
-              <p className="text-sm font-bold text-primary">{Math.round(progress)}% Uploaded</p>
+              <p className="text-sm font-bold text-primary">Uploading...</p>
+            </div>
+          ) : preview ? (
+            <div className="text-center space-y-3">
+              <img src={preview} alt="Preview" className="max-h-64 rounded-lg object-contain" />
+              <p className="text-xs text-foreground/40">Click to replace image</p>
             </div>
           ) : (
             <div className="text-center space-y-3">
@@ -84,7 +87,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onUploadComplete, path }) => 
               </div>
               <div>
                 <p className="text-sm font-bold">Click to upload image</p>
-                <p className="text-xs text-foreground/40 mt-1">PNG, JPG or WebP (Max 2MB)</p>
+                <p className="text-xs text-foreground/40 mt-1">PNG, JPG or WebP</p>
               </div>
             </div>
           )}
