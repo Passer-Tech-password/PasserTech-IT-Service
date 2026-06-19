@@ -18,14 +18,19 @@ const StaffLogin = () => {
   const router = useRouter();
   const { profile, loading: authLoadingState } = useAuth();
 
+  // Helper to check if a role is a staff-like role
+  const isStaffRole = (role: any) => {
+    return ["instructor", "course_manager", "content_creator", "staff"].includes(role);
+  };
+
   // Check if already logged in and redirect
   useEffect(() => {
     if (!authLoadingState) {
-      if (profile?.role === "staff" && profile?.isApproved) {
+      if (isStaffRole(profile?.role) && profile?.isApproved) {
         router.replace("/staff/dashboard");
       } else if (profile?.role === "admin") {
         router.replace("/admin/dashboard");
-      } else if (profile && profile?.role === "staff" && !profile?.isApproved) {
+      } else if (profile && isStaffRole(profile?.role) && !profile?.isApproved) {
         // If staff but not approved, redirect to pending
         router.replace("/staff/pending");
       } else if (profile) {

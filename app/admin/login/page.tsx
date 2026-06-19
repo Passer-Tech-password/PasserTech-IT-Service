@@ -18,15 +18,22 @@ const AdminLogin = () => {
   const router = useRouter();
   const { profile, loading: authLoadingState } = useAuth();
 
+  // Helper to check if a role is a staff-like role
+  const isStaffRole = (role: any) => {
+    return ["instructor", "course_manager", "content_creator", "staff"].includes(role);
+  };
+
   // Check if already logged in and redirect
   useEffect(() => {
     if (!authLoadingState) {
       if (profile?.role === "admin" && profile?.isApproved) {
         router.replace("/admin/dashboard");
-      } else if (profile?.role === "staff" && profile?.isApproved) {
+      } else if (isStaffRole(profile?.role) && profile?.isApproved) {
         router.replace("/staff/dashboard");
+      } else if (isStaffRole(profile?.role) && !profile?.isApproved) {
+        router.replace("/staff/pending");
       } else if (profile) {
-        // If logged in but not admin (and not approved staff), show error
+        // If logged in but not admin/staff, show error
         setError("You do not have permission to access this area.");
       }
       setAuthLoading(false);

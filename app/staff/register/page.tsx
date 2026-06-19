@@ -8,6 +8,7 @@ import { auth, db } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import { UserPlus, Mail, Lock, Phone, User, Briefcase, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useAuth } from "@/lib/auth";
 
 // Predefined job positions for PasserTech
 const JOB_POSITIONS = [
@@ -52,8 +53,29 @@ const StaffRegister = () => {
   const [availablePositions, setAvailablePositions] = useState<string[]>(JOB_POSITIONS);
   const [loading, setLoading] = useState(false);
   const [fetchingPositions, setFetchingPositions] = useState(true);
+  const [authLoading, setAuthLoading] = useState(true);
   const [error, setError] = useState("");
   const router = useRouter();
+  const { profile, loading: authLoadingState } = useAuth();
+
+  // Helper to check if a role is a staff-like role
+  const isStaffRole = (role: any) => {
+    return ["instructor", "course_manager", "content_creator", "staff"].includes(role);
+  };
+
+  // Check if already logged in and redirect
+  useEffect(() => {
+    if (!authLoadingState) {
+      if (isStaffRole(profile?.role) && profile?.isApproved) {
+        router.replace("/staff/dashboard");
+      } else if (profile?.role === "admin") {
+        router.replace("/admin/dashboard");
+      } else if (profile && isStaffRole(profile?.role) && !profile?.isApproved) {
+        router.replace("/staff/pending");
+      }
+      setAuthLoading(false);
+    }
+  }, [profile, authLoadingState, router]);
 
   // Fetch existing positions to filter out taken ones
   useEffect(() => {
@@ -128,12 +150,12 @@ const StaffRegister = () => {
     }
   };
 
-  if (fetchingPositions) {
+  if (authLoading || fetchingPositions) {
     return (
       <div className="min-h-screen pt-32 pb-20 bg-slate-950 text-white flex items-center justify-center px-4">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="w-12 h-12 animate-spin text-primary" />
-          <p className="text-foreground/70 text-lg">Loading available positions...</p>
+          <p className="text-foreground/70 text-lg">Loading...</p>
         </div>
       </div>
     );
